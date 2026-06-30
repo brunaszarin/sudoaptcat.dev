@@ -4,9 +4,7 @@ import type { ContactForm, ContactResponse } from '@/types'
 
 export function useContact() {
     return useMutation({
-        return useMutation({
-            mutationFn: (data: ContactForm) =>
+        mutationFn: (data: ContactForm) =>
                 api.post<ContactResponse>('/api/contact', data),
         })
-    })
-}
+    }
