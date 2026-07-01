@@ -10,9 +10,9 @@
   /* Background */
   --color-bg: #000000;
 
-  /* Fontes */
-  --font-pixel: 'Press Start 2P', 'Courier New', monospace;
-  --font-sans: 'Inter', system-ui, sans-serif;
+/* Fontes */
+  --font-pixel: var(--font-pixelify), 'Courier New', monospace;
+  --font-sans: var(--font-bricolage), system-ui, sans-serif;
 }
 
 /* ——— Reset base ——— */

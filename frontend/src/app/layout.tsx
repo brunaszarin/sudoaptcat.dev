@@ -1,16 +1,17 @@
 import type { Metadata } from 'next'
-import { Press_Start_2P, Inter } from 'next/font/google'
+import { Pixelify_Sans, Bricolage_Grotesque } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 
-const pixelFont = Press_Start_2P({
-  weight: '400',
+const pixelFont = Pixelify_Sans({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-pixel',
   display: 'swap',
 })
 
-const inter = Inter({
+const bricolage = Bricolage_Grotesque({
+  weight: ['400', '600', '700'],
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -33,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className={`${pixelFont.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={`${pixelFont.variable} ${bricolage.variable}`}>
       <body>
         <Providers>{children}</Providers>
       </body>
