@@ -1,0 +1,62 @@
+.pxbtn {
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  background: transparent;
+  position: relative;
+  border: none;
+  padding: 0;
+  cursor: inherit;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  transition: transform 0.1s ease;
+}
+.shape {
+  position: relative;
+  display: block;
+  padding: 13px 26px;
+}
+.clip {
+  clip-path: polygon(
+    8px 0, calc(100% - 8px) 0, calc(100% - 4px) 0, calc(100% - 4px) 4px,
+    100% 4px, 100% 8px, 100% calc(100% - 8px), 100% calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, calc(100% - 8px) 100%,
+    8px 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 calc(100% - 8px),
+    0 8px, 0 4px, 4px 4px, 4px 0
+  );
+}
+.border { position: absolute; inset: 0; z-index: 0; }
+.shadow {
+  position: absolute; inset: 0; z-index: -1;
+  opacity: 0; transform: translate(0, 0);
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+.fill { position: absolute; inset: 3px; z-index: 1; }
+.label { position: relative; z-index: 2; }
+.pxbtn:hover { transform: translate(-3px, -3px); }
+.pxbtn:hover .shadow { opacity: 1; transform: translate(5px, 5px); }
+.pxbtn:active { transform: translate(0, 0); }
+.pxbtn:active .shadow { opacity: 1; transform: translate(2px, 2px); }
+.green .border { background: #2f5d00; }
+.green .fill {
+  background: linear-gradient(to bottom, #c2f66d 0%, #c2f66d 22%, #aaff00 22%, #aaff00 74%, #7bc400 74%);
+}
+.green .label { color: #14280a; }
+.green .shadow { background: #1a3300; }
+.pink .border { background: #7a1240; }
+.pink .fill {
+  background: linear-gradient(to bottom, #ff9ec4 0%, #ff9ec4 22%, #ff4d94 22%, #ff4d94 74%, #e0447f 74%);
+}
+.pink .label { color: #4a0a24; }
+.pink .shadow { background: #3d0920; }
+.ghost .border { background: #aaff00; }
+.ghost .fill { background: #000; }
+.ghost .label { color: #aaff00; }
+.ghost .shadow { background: #2f5d00; }
+.pxbtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.pxbtn:disabled:hover { transform: none; }
+.pxbtn:disabled:hover .shadow { opacity: 0; }
