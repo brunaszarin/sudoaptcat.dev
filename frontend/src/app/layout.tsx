@@ -6,14 +6,14 @@ import './globals.css'
 const pixelFont = Pixelify_Sans({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--font-pixel',
+  variable: '--font-pixelify',
   display: 'swap',
 })
 
 const bricolage = Bricolage_Grotesque({
   weight: ['400', '600', '700'],
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-bricolage',
   display: 'swap',
 })
 

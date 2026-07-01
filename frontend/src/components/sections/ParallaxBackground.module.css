@@ -1,0 +1,19 @@
+.container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer {
+  position: absolute;
+  inset: -60px;
+  will-change: transform;
+}
+
+.particle {
+  position: absolute;
+  background: var(--color-neon, #aaff00);
+  image-rendering: pixelated;
+}
