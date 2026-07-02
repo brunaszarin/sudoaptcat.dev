@@ -1,8 +1,10 @@
 'use client'
 
 import Image from 'next/image'
+import { SchrodingerCat } from './SchrodingerCat'
 import { useMouseParallax } from '@/hooks/useMouseParallax'
 import { ParallaxBackground } from './ParallaxBackground'
+import { FloatingElements } from './FloatingElements'
 import { PixelButton } from '@/components/ui/PixelButton'
 import styles from './HeroSection.module.css'
 
@@ -10,9 +12,42 @@ export function HeroSection() {
   const { containerRef, offset } = useMouseParallax()
 
   return (
-    <section ref={containerRef} className={styles.hero}>
+    <section id="home" ref={containerRef} className={styles.hero}>
       <ParallaxBackground offset={offset} />
+      <FloatingElements />
+      {/* Imagem flutuante — canto superior esquerdo */}
+      <div
+        className={styles.floatImgTopLeft}
+        style={{
+          transform: `translate(${offset.x * 14}px, ${offset.y * 14}px)`,
+        }}
+      >
+        <Image
+          src="/assets/coracao.png"
+          alt=""
+          width={20}
+          height={20}
+          className={styles.floatImg}
+          aria-hidden="true"
+        />
+      </div>
 
+      {/* Imagem flutuante — canto inferior direito */}
+      <div
+        className={styles.floatImgBottomRight}
+        style={{
+          transform: `translate(${offset.x * 30}px, ${offset.y * 30}px)`,
+        }}
+      >
+        <Image
+          src="/assets/bun.png"
+          alt=""
+          width={30}
+          height={30}
+          className={styles.floatImg}
+          aria-hidden="true"
+        />
+      </div>
       <div className={styles.content}>
         {/* Texto à esquerda */}
         <div
@@ -26,30 +61,30 @@ export function HeroSection() {
             a fullstack software engineer.
           </h1>
           <p className={styles.subtitle}>
-           I build things for the web (and pet cats)
+            I build things for the web (and pet cats)
 
           </p>
           <div className={styles.buttons}>
             <PixelButton variant="green">my work</PixelButton>
-            <PixelButton variant="ghost">about me</PixelButton>
+            <PixelButton
+              variant="ghost"
+              onClick={() => {
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
+              about me
+            </PixelButton>
           </div>
         </div>
 
-        {/* Gatinho à direita — flutua e reage ao mouse */}
+        {/* Gato de Schrödinger — reage ao mouse e sai da caixa no hover */}
         <div
           className={styles.catWrap}
           style={{
             transform: `translate(${offset.x * 20}px, ${offset.y * 20}px)`,
           }}
         >
-          <Image
-            src="/assets/sudo-gatinho.png"
-            alt="sudo-gatinho, mascote pixel art"
-            width={220}
-            height={209}
-            className={styles.cat}
-            priority
-          />
+          <SchrodingerCat width={350} height={350} />
         </div>
       </div>
     </section>

@@ -1,0 +1,42 @@
+'use client'
+
+import { useScrollParallax } from '@/hooks/useScrollParallax'
+import { ParallaxBackground } from './ParallaxBackground'
+import styles from './AboutSection.module.css'
+
+export function AboutSection() {
+  const { elementRef, offset } = useScrollParallax(0.50)
+
+  return (
+    <section id="about" ref={elementRef} className={styles.about}>
+      <div
+        className={styles.bgWrap}
+        style={{ transform: `translateY(${offset}px)` }}
+      >
+        <ParallaxBackground offset={{ x: 0, y: 0 }} />
+      </div>
+
+      <div className={styles.content}>
+        <p className={styles.label}>// about me</p>
+        <h2 className={styles.title}>nice to meet you</h2>
+        <div className={styles.bio}>
+          <p>
+            Frontend-focused Fullstack Developer with expertise in React,
+            Next.js, TypeScript, JavaScript, HTML, CSS, Tailwind and Sass.
+          </p>
+          <p>
+            Experienced in developing and integrating solutions across insurance
+            systems, e-commerce ecosystems and logistics ERPs, handling complex
+            business rules and data-driven applications. Solid backend experience
+            with Node, Python, C# and Java, working with REST and GraphQL APIs.
+          </p>
+          <p>
+            Proficient with Git (GitHub, GitLab), testing (Jest, React Testing
+            Library), and Agile methodologies (Scrum, Kanban). Focused on
+            performance, scalability, maintainability and clean code.
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -30,6 +30,10 @@ html {
 
 /* ——— Cursor Mac OS Classic em verde neon ——— */
 html {
+  background-color: #000;
+  color: #f0f0f0;
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
   cursor: url('/cursors/hand-pointer.png') 3 1, auto;
 }
 
