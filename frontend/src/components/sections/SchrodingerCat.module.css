@@ -1,0 +1,57 @@
+.box {
+  position: relative;
+  cursor: inherit;
+}
+
+.art {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  filter: drop-shadow(0 0 14px rgba(170, 255, 0, 0.5))
+    drop-shadow(0 0 32px rgba(170, 255, 0, 0.2));
+}
+
+/* Estado padrão: caixa fechada visível, gato fora escondido */
+.closed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.open {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* No hover: troca — gato sai da caixa com um pulinho */
+.box:hover .closed {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.box:hover .open {
+  opacity: 1;
+  transform: translateY(-10px);
+}
+
+/* Sparkles — sempre visíveis, brilhando ao redor da caixa */
+.sparkle {
+  position: absolute;
+  color: var(--color-neon);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.sp1 { top: 20%; left: 15%; font-size: 18px; animation: twinkle 1.8s ease-in-out infinite 0s; }
+.sp2 { top: 10%; left: 70%; font-size: 14px; animation: twinkle 2.2s ease-in-out infinite 0.2s; }
+.sp3 { top: 35%; left: 85%; font-size: 22px; animation: twinkle 2s ease-in-out infinite 0.1s; }
+.sp4 { top: 5%; left: 40%; font-size: 16px; animation: twinkle 2.4s ease-in-out infinite 0.3s; }
+.sp5 { top: 45%; left: 5%; font-size: 20px; animation: twinkle 1.9s ease-in-out infinite 0.15s; }
+.sp6 { top: 25%; left: 55%; font-size: 13px; animation: twinkle 2.1s ease-in-out infinite 0.25s; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}

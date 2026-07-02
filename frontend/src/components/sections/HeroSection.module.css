@@ -66,7 +66,7 @@
 .catWrap {
   flex: 0 0 auto;
   will-change: transform;
-  margin-left: -40px;
+  margin-left: -10px;
 }
 
 .cat {
@@ -85,6 +85,37 @@
   }
 }
 
+/* Imagens flutuantes */
+.floatImgTopLeft {
+  position: absolute;
+  top: 8%;
+  left: 25%;
+  z-index: 1;
+  will-change: transform;
+}
+
+.floatImgBottomRight {
+  position: absolute;
+  top: 62%;
+  left: 10%;
+  z-index: 1;
+  will-change: transform;
+}
+
+.floatImg {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 10px rgba(170, 255, 0, 0.4));
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.floatImgTopLeft .floatImg {
+  animation-duration: 4s;
+}
+
+.floatImgBottomRight .floatImg {
+  animation-duration: 4.5s;
+}
+
 /* Responsivo: empilha em telas menores */
 @media (max-width: 768px) {
   .content {
@@ -99,5 +130,10 @@
 
   .buttons {
     justify-content: center;
+  }
+
+  .floatImgTopLeft,
+  .floatImgBottomRight {
+    display: none;
   }
 }
