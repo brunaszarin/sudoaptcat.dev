@@ -12,7 +12,7 @@ export function HeroSection() {
   const { containerRef, offset } = useMouseParallax()
 
   return (
-    <section ref={containerRef} className={styles.hero}>
+    <section id="home" ref={containerRef} className={styles.hero}>
       <ParallaxBackground offset={offset} />
       <FloatingElements />
       {/* Imagem flutuante — canto superior esquerdo */}
