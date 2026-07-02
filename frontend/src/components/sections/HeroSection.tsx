@@ -42,8 +42,8 @@ export function HeroSection() {
         <Image
           src="/assets/bun.png"
           alt=""
-          width={20}
-          height={20}
+          width={30}
+          height={30}
           className={styles.floatImg}
           aria-hidden="true"
         />
@@ -61,16 +61,23 @@ export function HeroSection() {
             a fullstack software engineer.
           </h1>
           <p className={styles.subtitle}>
-           I build things for the web (and pet cats)
+            I build things for the web (and pet cats)
 
           </p>
           <div className={styles.buttons}>
             <PixelButton variant="green">my work</PixelButton>
-            <PixelButton variant="ghost">about me</PixelButton>
+            <PixelButton
+              variant="ghost"
+              onClick={() => {
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
+              about me
+            </PixelButton>
           </div>
         </div>
 
-       {/* Gato de Schrödinger — reage ao mouse e sai da caixa no hover */}
+        {/* Gato de Schrödinger — reage ao mouse e sai da caixa no hover */}
         <div
           className={styles.catWrap}
           style={{
