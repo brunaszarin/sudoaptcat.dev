@@ -8,10 +8,10 @@ interface SchrodingerCatProps {
 
 const SPARKLES = [
   { symbol: '✦', className: 'sp1' },
-  { symbol: '✧', className: 'sp2' },
+  { symbol: '✦', className: 'sp2' },
   { symbol: '✦', className: 'sp3' },
   { symbol: '⋆', className: 'sp4' },
-  { symbol: '✧', className: 'sp5' },
+  { symbol: '✦', className: 'sp5' },
   { symbol: '✦', className: 'sp6' },
 ]
 
