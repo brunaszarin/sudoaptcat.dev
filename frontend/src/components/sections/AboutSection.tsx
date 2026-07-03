@@ -17,11 +17,11 @@ export function AboutSection() {
       </div>
 
       <div className={styles.content}>
-        <p className={styles.label}>// about me</p>
+        <p className={styles.label}>about me</p>
         <h2 className={styles.title}>nice to meet you</h2>
         <div className={styles.bio}>
           <p>
-            Frontend-focused Fullstack Developer with expertise in React,
+            I'm a frontend-focused Fullstack Developer with expertise in React,
             Next.js, TypeScript, JavaScript, HTML, CSS, Tailwind and Sass.
           </p>
           <p>

@@ -1,0 +1,153 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Base do tooltip (comum a todas as posições) */
+.tooltip {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.shape {
+  position: relative;
+  display: block;
+  padding: 9px 15px;
+}
+
+.clip {
+  clip-path: polygon(
+    6px 0, calc(100% - 6px) 0, calc(100% - 3px) 0, calc(100% - 3px) 3px,
+    100% 3px, 100% 6px, 100% calc(100% - 6px), 100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, calc(100% - 6px) 100%,
+    6px 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px), 0 calc(100% - 6px),
+    0 6px, 0 3px, 3px 3px, 3px 0
+  );
+}
+
+.border { position: absolute; inset: 0; background: var(--color-neon); z-index: 0; }
+.fill { position: absolute; inset: 2px; background: #0a0a0a; z-index: 1; }
+.label {
+  position: relative;
+  z-index: 2;
+  color: var(--color-neon);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ——— Posições do tooltip ——— */
+.top {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+.bottom {
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+.left {
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+.right {
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* ——— Seta (base) ——— */
+.arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+/* Seta pra cada posição (aponta na direção do elemento) */
+.arrow_top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid var(--color-neon);
+}
+
+
+.arrow_bottom {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid var(--color-neon);
+}
+
+
+.arrow_left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid var(--color-neon);
+}
+
+.arrow_right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 7px solid var(--color-neon);
+}
+
+/* ——— Hover: mostra tooltip e seta na posição final ——— */
+.wrap:hover .top,
+.wrap:hover .bottom { transform: translateX(-50%) translateY(0); opacity: 1; visibility: visible; }
+.wrap:hover .left,
+.wrap:hover .right { transform: translateY(-50%) translateX(0); opacity: 1; visibility: visible; }
+
+.wrap:hover .arrow_top,
+.wrap:hover .arrow_bottom { transform: translateX(-50%) translateY(0); opacity: 1; visibility: visible; }
+.wrap:hover .arrow_left,
+.wrap:hover .arrow_right { transform: translateY(-50%) translateX(0); opacity: 1; visibility: visible; }
+
+/* Alinhamento à direita (pra tooltips perto da borda direita) */
+.bottom.alignRight,
+.top.alignRight {
+  left: auto;
+  right: 0;
+  transform: translateY(-4px);
+}
+
+.wrap:hover .bottom.alignRight,
+.wrap:hover .top.alignRight {
+  transform: translateY(0);
+}
+
+.arrow_bottom.alignRight,
+.arrow_top.alignRight {
+  left: auto;
+  right: 12px;
+  transform: translateY(-4px);
+}
+
+.wrap:hover .arrow_bottom.alignRight,
+.wrap:hover .arrow_top.alignRight {
+  transform: translateY(0);
+}

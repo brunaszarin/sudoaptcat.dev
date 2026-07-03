@@ -55,6 +55,31 @@
   color: var(--color-neon);
 }
 
+.cvWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cvIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neon);
+  cursor: inherit;
+  opacity: 0.7;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.cvIcon:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.cvIcon svg {
+  image-rendering: pixelated;
+}
+
 .cvLink {
   text-decoration: none;
 }
