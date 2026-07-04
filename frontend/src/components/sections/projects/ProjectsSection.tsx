@@ -1,6 +1,10 @@
+'use client'
+
 import { EXPERIENCES } from '@/data/experiences'
+import { useCatWalk } from '@/hooks/useCatWalk'
 import { TimelinePath, ROW_YS } from './TimelinePath'
 import { CompanyHouse } from './CompanyHouse'
+import { WalkingCat } from './WalkingCat'
 import styles from './ProjectsSection.module.css'
 
 // Onde cada casinha fica (x do canto da casa), alternando lados
@@ -10,14 +14,17 @@ const HOUSE_XS = [512, 134, 512, 134, 512]
 const LABEL_XS = [536, 158, 536, 158, 536]
 
 export function ProjectsSection() {
-  return (
-    <section id="projects" className={styles.projects}>
-      <div className={styles.header}>
-        <p className={styles.label}>// my journey</p>
-        <h2 className={styles.title}>where the cat has walked</h2>
-      </div>
+  const { sectionRef, cat } = useCatWalk()
 
-      <div className={styles.mapWrap}>
+  return (
+<section id="projects" ref={sectionRef} className={styles.projects}>
+      <div className={styles.sticky}>
+        <div className={styles.header}>
+          <p className={styles.label}>// my journey</p>
+          <h2 className={styles.title}>where the cat has walked</h2>
+        </div>
+
+        <div className={styles.mapWrap}>
         <svg
           className={styles.map}
           viewBox="0 0 680 760"
@@ -60,21 +67,16 @@ export function ProjectsSection() {
             </g>
           ))}
 
-          {/* Gatinho no início */}
-          <g shapeRendering="crispEdges">
-            <rect x="52" y="84" width="8" height="8" fill="#88cc00" />
-            <rect x="60" y="84" width="8" height="8" fill="#aaff00" />
-            <rect x="52" y="92" width="16" height="8" fill="#aaff00" />
-            <rect x="54" y="88" width="3" height="3" fill="#000" />
-            <rect x="63" y="88" width="3" height="3" fill="#000" />
-            <rect x="50" y="100" width="5" height="3" fill="#76b623" />
-            <rect x="65" y="100" width="5" height="3" fill="#76b623" />
-            <text x="60" y="76" className={styles.startLabel} textAnchor="middle">
-              start!
-            </text>
-          </g>
+ {/* Gatinho que caminha pelo caminho conforme o scroll */}
+          <WalkingCat
+            x={cat.x}
+            y={cat.y}
+            facingLeft={cat.facingLeft}
+            isWalking={cat.isWalking}
+    />
         </svg>
       </div>
+    </div>
     </section>
   )
 }
