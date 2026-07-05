@@ -7,18 +7,18 @@
 // As 5 alturas (y) de cada linha horizontal
 export const ROW_YS = [102, 242, 382, 522, 662]
 
-// O traçado-guia que o gato segue (mesma rota da trilha, como um único path)
+// O traçado-guia que o gato segue (a área onde ele de fato caminha)
 export const GUIDE_PATH = [
-  `M 60 ${ROW_YS[0] + 8}`,
-  `L 564 ${ROW_YS[0] + 8}`,
-  `L 564 ${ROW_YS[1] + 8}`,
-  `L 158 ${ROW_YS[1] + 8}`,
-  `L 158 ${ROW_YS[2] + 8}`,
-  `L 564 ${ROW_YS[2] + 8}`,
-  `L 564 ${ROW_YS[3] + 8}`,
-  `L 158 ${ROW_YS[3] + 8}`,
-  `L 158 ${ROW_YS[4] + 8}`,
-  `L 620 ${ROW_YS[4] + 8}`,
+  `M -80 ${ROW_YS[0] + 8}`,           // entra pela esquerda
+  `L 564 ${ROW_YS[0] + 8}`,           // linha 1 →
+  `L 564 ${ROW_YS[1] + 8}`,           // desce
+  `L 158 ${ROW_YS[1] + 8}`,           // linha 2 ←
+  `L 158 ${ROW_YS[2] + 8}`,           // desce
+  `L 564 ${ROW_YS[2] + 8}`,           // linha 3 →
+  `L 564 ${ROW_YS[3] + 8}`,           // desce
+  `L 158 ${ROW_YS[3] + 8}`,           // linha 4 ←
+  `L 158 ${ROW_YS[4] + 8}`,           // desce
+  `L 760 ${ROW_YS[4] + 8}`,           // linha 5 → sai pela direita
 ].join(' ')
 
 const TRACK = 16 // espessura da trilha
@@ -40,9 +40,9 @@ function buildSegments(): Segment[] {
     const isFirst = i === 0
     const isLast = i === ROW_YS.length - 1
 
-    // Linha horizontal — a primeira e a última são um pouco mais largas
-    const startX = isFirst ? 60 : EDGE_LEFT
-    const endX = isLast ? 620 : EDGE_RIGHT
+    // Linha horizontal — a primeira e a última "sangram" pras bordas da tela
+    const startX = isFirst ? -400 : EDGE_LEFT
+    const endX = isLast ? 1080 : EDGE_RIGHT
     segments.push({
       x: startX,
       y,
@@ -52,7 +52,6 @@ function buildSegments(): Segment[] {
 
     // Descida vertical (exceto na última linha)
     if (!isLast) {
-      // Linhas pares descem pela direita, ímpares pela esquerda
       const goesRight = i % 2 === 0
       const vx = goesRight ? EDGE_RIGHT - TRACK : EDGE_LEFT
       segments.push({
@@ -71,7 +70,7 @@ const SEGMENTS = buildSegments()
 
 export function TimelinePath() {
   return (
- <g shapeRendering="crispEdges" aria-hidden="true">
+    <g shapeRendering="crispEdges" aria-hidden="true">
       {SEGMENTS.map((s, i) => (
         <g key={i}>
           {/* Corpo escuro da trilha */}

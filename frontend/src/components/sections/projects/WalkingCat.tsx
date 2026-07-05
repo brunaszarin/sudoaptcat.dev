@@ -1,33 +1,29 @@
 import { useEffect, useState } from 'react'
+import styles from './WalkingCat.module.css'
 
 interface WalkingCatProps {
-  x: number
-  y: number
+  x: number // coordenada X no sistema do SVG
+  y: number // coordenada Y no sistema do SVG
   facingLeft: boolean
   isWalking: boolean
-  size?: number
 }
 
-// Os 3 frames: 1 = parado, 2 e 3 = passos
+// Dimensões do viewBox do SVG (pra converter coordenadas em %)
+const VIEWBOX_W = 1200
+const VIEWBOX_H = 760
+const TRANSLATE_X = 260 // o mesmo translate do grupo no SVG
+
 const FRAMES = [
   '/assets/walk-2.png',
   '/assets/walk-1.png',
   '/assets/walk-3.png',
   '/assets/walk-1.png',
 ]
-
 const IDLE_FRAME = '/assets/walk-1.png'
 
-export function WalkingCat({
-  x,
-  y,
-  facingLeft,
-  isWalking,
-  size = 40,
-}: WalkingCatProps) {
+export function WalkingCat({ x, y, facingLeft, isWalking }: WalkingCatProps) {
   const [frameIndex, setFrameIndex] = useState(0)
 
-  // Cicla os frames enquanto estiver andando
   useEffect(() => {
     if (!isWalking) return
     const interval = setInterval(() => {
@@ -38,23 +34,20 @@ export function WalkingCat({
 
   const href = isWalking ? FRAMES[frameIndex] : IDLE_FRAME
 
-  // Centraliza o sprite no ponto (x, y) e espelha se necessário
-  const half = size / 2
+  // Converte a coordenada SVG (com o translate) em porcentagem do container
+  const leftPct = ((x + TRANSLATE_X) / VIEWBOX_W) * 100
+  const topPct = (y / VIEWBOX_H) * 100
 
   return (
-    <image
-      href={href}
-      x={-half}
-      y={-half}
-      width={size}
-      height={size}
+    <img
+      src={href}
+      alt=""
+      aria-hidden="true"
+      className={styles.cat}
       style={{
-        imageRendering: 'pixelated',
-        transform: facingLeft
-          ? `translate(${x}px, ${y}px) scaleX(-1)`
-          : `translate(${x}px, ${y}px)`,
-        transformBox: 'fill-box',
-        transformOrigin: 'center',
+        left: `${leftPct}%`,
+        top: `${topPct}%`,
+        transform: `translate(-50%, -50%) ${facingLeft ? 'scaleX(-1)' : ''}`,
       }}
     />
   )

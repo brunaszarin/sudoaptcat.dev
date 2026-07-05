@@ -16,6 +16,8 @@ export function useCatWalk() {
     isWalking: false,
   })
 
+    const [progress, setProgress] = useState(0)
+
   const lastX = useRef(60)
   const walkingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -37,8 +39,10 @@ export function useCatWalk() {
       const scrollableDistance = section!.offsetHeight - viewportH
       const scrolled = -rect.top
       const raw = scrolled / scrollableDistance
-      const progress = Math.min(1, Math.max(0, raw))
+      const progress = Math.min(1, Math.max(0, raw)) 
+      setProgress(progress)
 
+      
       // Onde o gato está ao longo do path
       const point = path!.getPointAtLength(progress * totalLength)
 
@@ -69,5 +73,5 @@ export function useCatWalk() {
     }
   }, [])
 
-  return { sectionRef, cat }
+  return { sectionRef, cat, progress }
 }
