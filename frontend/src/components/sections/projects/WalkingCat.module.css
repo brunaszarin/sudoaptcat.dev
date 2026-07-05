@@ -1,9 +1,7 @@
 .cat {
-  position: absolute;
-  width: 44px;
-  height: 44px;
+  display: block;
+  width: 80px;
+  height: 80px;
   image-rendering: pixelated;
-  pointer-events: none;
-  z-index: 5;
-  transition: none;
+  filter: drop-shadow(0 0 12px rgba(170, 255, 0, 0.5));
 }
