@@ -9,18 +9,18 @@ const STOP_SPACING = 620
 const FIRST_STOP = 400
 // Largura total da faixa do mundo
 export const WORLD_WIDTH =
-    FIRST_STOP + STOP_SPACING * (EXPERIENCES.length - 1) + 2000
+  FIRST_STOP + STOP_SPACING * (EXPERIENCES.length - 1) + 2000
 
 // A posição X de cada empresa na faixa
 export function stopX(index: number) {
-    return FIRST_STOP + index * STOP_SPACING
+  return FIRST_STOP + index * STOP_SPACING
 }
 
 // Onde o gato fica fixo na tela (px da esquerda)
 export const CAT_ANCHOR = 140
 
 interface WorldStripProps {
-    progress: number
+  progress: number
 }
 
 export function WorldStrip({ progress }: WorldStripProps) {
@@ -30,47 +30,45 @@ export function WorldStrip({ progress }: WorldStripProps) {
   const maxShift = stopX(EXPERIENCES.length - 1) - CAT_ANCHOR - 200
   const shift = worldProgress * maxShift
 
-    return (
-        <div
-            className={styles.world}
-            style={{
-                width: `${WORLD_WIDTH}px`,
-                transform: `translateX(${-shift}px)`,
-            }}
-        >
-            {/* Chão */}
-            <div className={styles.ground} />
-            <div className={styles.groundTop} />
+  return (
+    <div
+      className={styles.world}
+      style={{
+        width: `${WORLD_WIDTH}px`,
+        transform: `translateX(${-shift}px)`,
+      }}
+    >
+      {/* Chão */}
+      <div className={styles.ground} />
+      <div className={styles.groundTop} />
 
-            {/* Casinhas + cards de cada empresa */}
-            {EXPERIENCES.map((exp, i) => {
-                // Quão "ativa" está esta empresa (o gato está na frente dela?)
-                const catWorldX = shift + CAT_ANCHOR
-                const distance = Math.abs(catWorldX - stopX(i))
-                const isActive = distance < STOP_SPACING / 2.2
+      {/* Casinhas + cards de cada empresa */}
+      {EXPERIENCES.map((exp, i) => {
+        // Quão "ativa" está esta empresa (o gato está na frente dela?)
+        const catWorldX = shift + CAT_ANCHOR
+        const distance = Math.abs(catWorldX - stopX(i))
+        const isActive = distance < STOP_SPACING / 2.2
 
-                return (
-                    <div key={exp.id}>
-                        {/* Casinha */}
-                        <svg
-                            className={styles.house}
-                            style={{ left: `${stopX(i) - 35}px` }}
-                            viewBox="0 0 70 60"
-                            width="70"
-                        >
-                            <CompanyHouse x={8} y={16} />
-                        </svg>
+        return (
+          <div key={exp.id}>
+            {/* Casinha */}
+            <div
+              className={styles.house}
+              style={{ left: `${stopX(i) - 70}px` }}
+            >
+              <CompanyHouse />
+            </div>
 
-                        {/* Card com detalhes */}
-                        <div
-                            className={`${styles.cardSlot} ${isActive ? styles.cardActive : ''}`}
-                            style={{ left: `${stopX(i) + 60}px` }}
-                        >
-                            <CompanyCard experience={exp} />
-                        </div>
-                    </div>
-                )
-            })}
-        </div>
-    )
+            {/* Card com detalhes */}
+            <div
+              className={`${styles.cardSlot} ${isActive ? styles.cardActive : ''}`}
+              style={{ left: `${stopX(i) + 60}px` }}
+            >
+              <CompanyCard experience={exp} />
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
 }

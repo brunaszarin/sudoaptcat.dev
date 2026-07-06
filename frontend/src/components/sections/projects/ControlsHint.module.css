@@ -1,0 +1,68 @@
+.hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  animation: hintPulse 3s ease-in-out infinite;
+}
+
+.clip {
+  clip-path: polygon(
+    6px 0, calc(100% - 6px) 0, calc(100% - 3px) 0, calc(100% - 3px) 3px,
+    100% 3px, 100% 6px, 100% calc(100% - 6px), 100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, calc(100% - 6px) 100%,
+    6px 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px), 0 calc(100% - 6px),
+    0 6px, 0 3px, 3px 3px, 3px 0
+  );
+}
+
+.border {
+  position: absolute;
+  inset: 0;
+  background: rgba(170, 255, 0, 0.4);
+  z-index: 0;
+}
+
+.fill {
+  position: absolute;
+  inset: 2px;
+  background: #0a1400;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--color-neon);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.icon {
+  width: 12px;
+  height: auto;
+}
+
+.key {
+  width: 18px;
+  height: 18px;
+}
+
+.text {
+  font-weight: 600;
+}
+
+.divider {
+  color: #4d7200;
+  font-size: 11px;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
