@@ -3,6 +3,7 @@ import styles from './WalkingCat.module.css'
 
 interface WalkingCatProps {
   isWalking: boolean
+  facingLeft: boolean
 }
 
 const FRAMES = [
@@ -13,7 +14,7 @@ const FRAMES = [
 ]
 const IDLE_FRAME = '/assets/walk-1.png'
 
-export function WalkingCat({ isWalking }: WalkingCatProps) {
+export function WalkingCat({ isWalking, facingLeft }: WalkingCatProps) {
   const [frameIndex, setFrameIndex] = useState(0)
 
   useEffect(() => {
@@ -27,10 +28,11 @@ export function WalkingCat({ isWalking }: WalkingCatProps) {
   const href = isWalking ? FRAMES[frameIndex] : IDLE_FRAME
 
   return (
-    <img
+  <img
       src={href}
       alt="pixel cat walking through the career timeline"
       className={styles.cat}
+      style={{ transform: facingLeft ? 'scaleX(-1)' : 'none' }}
     />
   )
 }

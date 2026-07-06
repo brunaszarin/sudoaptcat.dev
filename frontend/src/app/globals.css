@@ -59,3 +59,32 @@ a, button, [role="button"] {
   background: #aaff00;
   color: #000;
 }
+
+/* Fade-in das seções ao entrar na tela */
+.fade-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gradiente preto no fim de cada seção (transição suave) */
+.section-fade-bottom {
+  position: relative;
+}
+
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #000);
+  pointer-events: none;
+  z-index: 5;
+}

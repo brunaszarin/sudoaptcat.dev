@@ -6,13 +6,19 @@ import { useMouseParallax } from '@/hooks/useMouseParallax'
 import { ParallaxBackground } from './ParallaxBackground'
 import { FloatingElements } from './FloatingElements'
 import { PixelButton } from '@/components/ui/PixelButton'
+import { useFadeIn } from '@/hooks/useFadeIn'
 import styles from './HeroSection.module.css'
 
 export function HeroSection() {
   const { containerRef, offset } = useMouseParallax()
+  const { ref: fadeRef, isVisible } = useFadeIn()
 
   return (
-    <section id="home" ref={containerRef} className={styles.hero}>
+     <section
+      id="home"
+      ref={fadeRef}
+      className={`${styles.hero} fade-section section-fade-bottom ${isVisible ? 'is-visible' : ''}`}
+    >
       <ParallaxBackground offset={offset} />
       <FloatingElements />
       {/* Imagem flutuante — canto superior esquerdo */}
