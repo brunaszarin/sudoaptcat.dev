@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 export function useScrollParallax(speed = 0.3) {
-  const elementRef = useRef<HTMLElement>(null)
+ const elementRef = useRef<HTMLDivElement | null>(null)
   const [offset, setOffset] = useState(0)
 
   useEffect(() => {

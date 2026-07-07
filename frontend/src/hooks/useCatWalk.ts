@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 export function useCatWalk() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
   const [progress, setProgress] = useState(0)
   const [isWalking, setIsWalking] = useState(false)
   const [facingLeft, setFacingLeft] = useState(false)

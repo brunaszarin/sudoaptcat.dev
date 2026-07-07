@@ -7,19 +7,18 @@ import styles from './AboutSection.module.css'
 
 export function AboutSection() {
   const { elementRef, offset } = useScrollParallax(0.50)
-  const { ref: fadeRef, isVisible } = useFadeIn<HTMLElement>()
+  const { ref: fadeRef, isVisible } = useFadeIn<HTMLDivElement>()
 
   return (
-    <section
-      id="about"
-      ref={fadeRef}
-      className={`${styles.about} fade-section ${isVisible ? 'is-visible' : ''}`}
-    >
+    <section id="about" className={styles.about}>
       <div ref={elementRef} className={styles.bgWrap}>
-        <ParallaxBackground offset={{ x: 0, y: offset }} />
+        <ParallaxBackground offset={{ x: 0, y: offset * 0.02 }} />
       </div>
 
-      <div className={styles.content}>
+      <div
+        ref={fadeRef}
+        className={`${styles.content} fade-section ${isVisible ? 'is-visible' : ''}`}
+      >
         <p className={styles.label}>about me</p>
         <h2 className={styles.title}>nice to meet you</h2>
         <div className={styles.bio}>
