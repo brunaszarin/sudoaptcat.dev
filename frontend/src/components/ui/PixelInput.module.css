@@ -1,0 +1,67 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #7bc400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.wrap {
+  position: relative;
+  width: 100%;
+}
+
+.clip {
+  clip-path: polygon(
+    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px
+  );
+}
+
+.border {
+  position: absolute;
+  inset: 0;
+  background: rgba(170, 255, 0, 0.4);
+  transition: background 0.2s;
+}
+
+.fill {
+  position: absolute;
+  inset: 2px;
+  background: #0d1a05;
+}
+
+/* Borda mais viva quando o campo está focado */
+.wrap:focus-within .border {
+  background: var(--color-neon);
+}
+
+.input {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 11px 13px;
+  color: #f0f0f0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #4d7200;
+}
+
+.textarea {
+  resize: none;
+  min-height: 100px;
+}
