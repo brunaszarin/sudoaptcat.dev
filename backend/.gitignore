@@ -1,0 +1,20 @@
+# Compilados / build
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Maven
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Variáveis de ambiente (segredos!)
+.env
