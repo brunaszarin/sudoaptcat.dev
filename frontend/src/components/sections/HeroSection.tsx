@@ -77,7 +77,12 @@ export function HeroSection() {
             I build things for the web (and pet cats)
           </p>
           <div className={styles.buttons}>
-            <PixelButton variant="green">my work</PixelButton>
+            <PixelButton 
+            variant="green"
+            onClick={()=>{ 
+              document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth'})
+            }}
+            >my work</PixelButton>
             <PixelButton
               variant="ghost"
               onClick={() => {

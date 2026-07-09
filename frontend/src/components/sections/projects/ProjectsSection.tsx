@@ -38,8 +38,8 @@ export function ProjectsSection() {
         <SpaceBackground mouseOffset={offset} />
 
         <div className={styles.header}>
-          <p className={styles.label}>// my journey</p>
-          <h2 className={styles.title}>where the cat has walked</h2>
+          <p className={styles.label}>my journey</p>
+          <h2 className={styles.title}>some places I've already been</h2>
         </div>
 
         <div className={styles.stage}>
