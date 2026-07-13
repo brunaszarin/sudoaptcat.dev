@@ -1,4 +1,3 @@
 package dev.brunaszarin.portfolio.contact.dto;
 
-public record ContactResponse() {
-}
+public record ContactResponse(String message) {}
