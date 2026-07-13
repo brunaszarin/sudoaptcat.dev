@@ -25,3 +25,12 @@ management:
     health:
       probes:
         enabled: true
+
+app:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+resend:
+  api-key: ${RESEND_API_KEY}
+  from: contato@sudoaptcat.dev
+  to: brunaszarin@gmail.com
