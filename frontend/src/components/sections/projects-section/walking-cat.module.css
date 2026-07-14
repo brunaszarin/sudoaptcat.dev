@@ -1,0 +1,16 @@
+.cat {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.sprite {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px rgba(170, 255, 0, 0.5));
+  /* Sem transition — a troca precisa ser instantânea (pixel art) */
+}

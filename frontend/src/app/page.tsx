@@ -1,9 +1,9 @@
-import { Navbar } from '@/components/layout/Navbar'
-import { HeroSection } from '@/components/sections/HeroSection'
-import { LogoMarquee } from '@/components/sections/LogoMarquee'
-import { AboutSection } from '@/components/sections/AboutSection'
-import { ProjectsSection } from '@/components/sections/projects/ProjectsSection'
-import { ContactSection } from '@/components/sections/contact/ContactSection'
+import { Navbar } from '@/components/layout/navbar'
+import { HeroSection } from '@/components/sections/hero-section'
+import { LogoMarquee } from '@/components/sections/logo-marquee'
+import { AboutSection } from '@/components/sections/about-section'
+import { ProjectsSection } from '@/components/sections/projects-section'
+import { ContactSection } from '@/components/sections/contact-section'
 
 export default function Home() {
   return (
