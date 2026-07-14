@@ -1,9 +1,9 @@
-import { renderHook, act } from '@testing-library/react'
+import { renderHook} from '@testing-library/react'
 import { useMouseParallax } from '../useMouseParallax'
 
 describe('useMouseParallax', () => {
   beforeEach(() => {
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
       return 1
     })
     jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})

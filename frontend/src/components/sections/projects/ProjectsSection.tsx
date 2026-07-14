@@ -11,7 +11,7 @@ import { useKeyboardScroll } from '@/hooks/useKeyboardScroll'
 import styles from './ProjectsSection.module.css'
 
 export function ProjectsSection() {
-  const { sectionRef, progress, isWalking, facingLeft } = useCatWalk()
+  const { sectionRef, progress, facingLeft } = useCatWalk()
   const { containerRef, offset } = useMouseParallax()
   const { ref: fadeRef, isVisible } = useFadeIn<HTMLElement>(0.01)
   useKeyboardScroll(sectionRef)
@@ -39,7 +39,7 @@ export function ProjectsSection() {
 
         <div className={styles.header}>
           <p className={styles.label}>my journey</p>
-          <h2 className={styles.title}>some places I've already been</h2>
+          <h2 className={styles.title}>some places I&apos;ve already been</h2>
         </div>
 
         <div className={styles.stage}>

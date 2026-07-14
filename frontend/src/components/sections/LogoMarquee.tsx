@@ -22,7 +22,7 @@ const LOGOS: Logo[] = [
 export function LogoMarquee() {
     return (
         <section className={styles.marquee}>
-            <p className={styles.title}>some of the brands I've already worked with</p>
+            <p className={styles.title}>some of the brands I&apos;ve already worked with</p>
 
             <div className={styles.track}>
                 {/* Duplicamos a lista pra criar o loop infinito */}

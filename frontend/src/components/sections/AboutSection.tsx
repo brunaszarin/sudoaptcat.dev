@@ -23,7 +23,7 @@ export function AboutSection() {
         <h2 className={styles.title}>nice to meet you</h2>
         <div className={styles.bio}>
           <p>
-            I'm a frontend-focused Fullstack Developer with expertise in React,
+            I&apos;m a frontend-focused Fullstack Developer with expertise in React,
             Next.js, TypeScript, JavaScript, HTML, CSS, Tailwind and Sass.
           </p>
           <p>

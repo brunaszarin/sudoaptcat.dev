@@ -69,7 +69,7 @@ export function HeroSection() {
             transform: `translate(${offset.x * -5}px, ${offset.y * -5}px)`,
           }}
         >
-          <p className={styles.tag}>hi, i'm bruna szarin 👋🏻</p>
+          <p className={styles.tag}>hi, i&apos;m bruna szarin 👋🏻</p>
           <h1 className={styles.title}>
             a fullstack software engineer.
           </h1>
