@@ -1,0 +1,1 @@
+export { GithubIcon, LinkedinIcon, InstagramIcon } from './social-icons'
