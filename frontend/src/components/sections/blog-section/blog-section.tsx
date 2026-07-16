@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { usePosts } from '@/hooks/usePosts'
 import { useTerminalScroll } from '@/hooks/useTerminalScroll'
 import { HomeIcon, UserIcon, MonitorIcon, MailIcon, TrashIcon } from '@/components/layout/navbar/nav-icons'
@@ -21,6 +22,9 @@ const DESKTOP_ICONS = [
 export function BlogSection() {
   const { data: posts } = usePosts()
   const [showTrashError, setShowTrashError] = useState(false)
+  const [showBlogPrompt, setShowBlogPrompt] = useState(false)
+  const [hasPromptedBlogNav, setHasPromptedBlogNav] = useState(false)
+  const router = useRouter()
   const [clock, setClock] = useState('')
 
   const recentPosts = (posts ?? [])
@@ -41,6 +45,15 @@ export function BlogSection() {
     const interval = setInterval(tick, 30000)
     return () => clearInterval(interval)
   }, [])
+
+  // Assim que o terminal termina de "ligar" pela primeira vez, oferece
+  // ir pra página completa do blog
+  useEffect(() => {
+    if (powerLevel >= 0.98 && !hasPromptedBlogNav) {
+      setHasPromptedBlogNav(true)
+      setShowBlogPrompt(true)
+    }
+  }, [powerLevel, hasPromptedBlogNav])
 
   function openPost(slug: string) {
     window.open(`/blog/${slug}`, '_blank')
@@ -72,6 +85,7 @@ export function BlogSection() {
         openPost(recentPosts[selectedIndex].slug)
       } else if (e.key === 'Escape') {
         setShowTrashError(false)
+        setShowBlogPrompt(false)
       }
     }
 
@@ -175,6 +189,28 @@ export function BlogSection() {
                 </div>
                 <div className={styles.errorActions}>
                   <button className={styles.errorOk} onClick={() => setShowTrashError(false)}>OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showBlogPrompt && (
+          <div className={styles.errorOverlay} onClick={() => setShowBlogPrompt(false)}>
+            <div className={styles.errorWindow} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.errorBorder} />
+              <div className={styles.errorInner}>
+                <div className={styles.errorBar}>
+                  <span className={styles.errorBarTitle}>system</span>
+                  <button className={styles.errorClose} onClick={() => setShowBlogPrompt(false)}>✕</button>
+                </div>
+                <div className={styles.errorBody}>
+                  <span className={styles.errorIcon}>?</span>
+                  <p className={styles.errorMessage}>open the full blog page?</p>
+                </div>
+                <div className={styles.errorActions}>
+                  <button className={styles.errorGhost} onClick={() => setShowBlogPrompt(false)}>no</button>
+                  <button className={styles.errorOk} onClick={() => router.push('/blog')}>yes</button>
                 </div>
               </div>
             </div>
