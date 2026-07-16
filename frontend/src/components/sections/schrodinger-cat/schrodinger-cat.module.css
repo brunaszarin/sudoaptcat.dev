@@ -1,6 +1,6 @@
 .box {
   position: relative;
-  cursor: inherit;
+  cursor: pointer;
 }
 
 .art {
@@ -25,13 +25,28 @@
   transform: translateY(8px);
 }
 
-/* No hover: troca — gato sai da caixa com um pulinho */
-.box:hover .closed {
+/* Hover no mouse (desktop) — só em dispositivos com hover de verdade,
+   evita o "hover fantasma" que o Safari mobile dispara ao tocar */
+@media (hover: hover) and (pointer: fine) {
+  .box:hover .closed {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .box:hover .open {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+}
+
+/* Toggle por clique/toque — funciona em qualquer dispositivo,
+   inclusive mobile onde :hover não é confiável */
+.boxOpen .closed {
   opacity: 0;
   transform: translateY(8px);
 }
 
-.box:hover .open {
+.boxOpen .open {
   opacity: 1;
   transform: translateY(-10px);
 }

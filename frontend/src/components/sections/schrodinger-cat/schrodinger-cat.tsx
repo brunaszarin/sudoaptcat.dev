@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import styles from './schrodinger-cat.module.css'
 
@@ -16,8 +19,24 @@ const SPARKLES = [
 ]
 
 export function SchrodingerCat({ width = 260, height = 221 }: SchrodingerCatProps) {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <div className={styles.box} style={{ width, height }}>
+    <div
+      className={`${styles.box} ${isOpen ? styles.boxOpen : ''}`}
+      style={{ width, height }}
+      onClick={() => setIsOpen((v) => !v)}
+      role="button"
+      tabIndex={0}
+      aria-pressed={isOpen}
+      aria-label="gato de Schrödinger — toque para abrir ou fechar a caixa"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          setIsOpen((v) => !v)
+        }
+      }}
+    >
       {SPARKLES.map((s, i) => (
         <span key={i} className={`${styles.sparkle} ${styles[s.className]}`} aria-hidden="true">
           {s.symbol}
