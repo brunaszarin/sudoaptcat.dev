@@ -15,7 +15,7 @@ jest.mock('@/hooks/useContact', () => ({
   }),
 }))
 jest.mock('@/components/ui/pixel-button', () => ({
-  PixelButton: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+  PixelButton: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props}>{children}</button>,
 }))
 jest.mock('@/components/sections/social-links', () => ({
   SocialLinks: () => <div data-testid="social-links" />,
