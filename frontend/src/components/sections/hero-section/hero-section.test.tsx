@@ -3,7 +3,7 @@ import { HeroSection } from './hero-section'
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img alt="" {...props} />,
 }))
 jest.mock('@/hooks/useMouseParallax', () => ({
   useMouseParallax: () => ({ containerRef: { current: null }, offset: { x: 0, y: 0 } }),
@@ -21,7 +21,7 @@ jest.mock('../floating-elements', () => ({
   FloatingElements: () => <div data-testid="floating" />,
 }))
 jest.mock('@/components/ui/pixel-button', () => ({
-  PixelButton: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
+  PixelButton: ({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) => <button onClick={onClick}>{children}</button>,
 }))
 
 describe('HeroSection', () => {

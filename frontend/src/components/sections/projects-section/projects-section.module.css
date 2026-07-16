@@ -62,3 +62,10 @@
   z-index: 10;
   transition: opacity 0.2s ease;
 }
+
+@media (max-width: 768px) {
+  .sticky {
+    height: calc(100vh - var(--mobile-tabbar-height));
+    height: calc(100dvh - var(--mobile-tabbar-height));
+  }
+}

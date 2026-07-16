@@ -118,6 +118,9 @@
 
 /* Responsivo: empilha em telas menores */
 @media (max-width: 768px) {
+  .hero {
+    min-height: calc(100vh - var(--mobile-tabbar-height));
+  }
   .content {
     flex-direction: column-reverse;
     text-align: center;
@@ -130,6 +133,7 @@
 
   .buttons {
     justify-content: center;
+    margin-bottom: var(--mobile-tabbar-height);
   }
 
   .floatImgTopLeft,

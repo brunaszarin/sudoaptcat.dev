@@ -21,7 +21,7 @@ jest.mock('./world-strip', () => ({
   CAT_ANCHOR: 100,
 }))
 jest.mock('./walking-cat', () => ({
-  WalkingCat: ({ isWalking }: any) => <div data-testid="walking-cat" data-walking={isWalking} />,
+  WalkingCat: ({ isWalking }: { isWalking: boolean }) => <div data-testid="walking-cat" data-walking={isWalking} />,
 }))
 jest.mock('./controls-hint', () => ({
   ControlsHint: () => <div data-testid="controls-hint" />,

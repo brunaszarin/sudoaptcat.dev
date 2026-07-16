@@ -81,3 +81,9 @@
     display: none;
   }
 }
+
+@media (max-width: 640px) {
+  .hint {
+    bottom: calc(24px + var(--mobile-tabbar-height));
+  }
+}

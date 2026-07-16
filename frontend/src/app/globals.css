@@ -6,6 +6,7 @@
   --color-neon-dim: #88cc00;
   --color-neon-muted: #4d7200;
   --color-neon-faint: #1a2900;
+  --mobile-tabbar-height: 68px;
 
   /* Background */
   --color-bg: #000000;
@@ -87,4 +88,10 @@ a, button, [role="button"] {
   background: linear-gradient(to bottom, transparent, #000);
   pointer-events: none;
   z-index: 5;
+}
+/* Reserva espaço pro tab bar mobile fixo, evitando sobrepor o fim do conteúdo */
+@media (max-width: 768px) {
+  main {
+    padding-bottom: calc(var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px));
+  }
 }
