@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePosts } from '@/hooks/usePosts'
 import type { Post } from '@/types'
-import { BlogIcon, UserIcon } from '@/components/layout/navbar/nav-icons'
+import { BlogIcon } from '@/components/layout/navbar/nav-icons'
 import styles from './blog.module.css'
 
 const PAGE_SIZE = 6
@@ -37,7 +37,7 @@ function Cover({ post, fallbackClassName, imageSizes }: CoverProps) {
   return <BlogIcon className={fallbackClassName} />
 }
 
-export function BlogPage() {
+function BlogPage() {
   const { data: posts, isLoading, error } = usePosts()
   const [visibleCount, setVisibleCount] = useState(1 + PAGE_SIZE)
 

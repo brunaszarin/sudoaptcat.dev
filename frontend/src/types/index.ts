@@ -4,6 +4,7 @@ export interface Post {
   slug: string
   excerpt: string
   content: string
+  coverImage: string | null
   tags: string[]
   published: boolean
   createdAt: string

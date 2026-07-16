@@ -3,7 +3,7 @@ import { SchrodingerCat } from './schrodinger-cat'
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ priority: _priority, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => <img alt="" {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => <img alt="" {...props} />,
 }))
 
 describe('SchrodingerCat', () => {

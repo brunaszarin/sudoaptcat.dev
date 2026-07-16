@@ -39,14 +39,17 @@ describe('Navbar', () => {
     expect(section.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
   })
 
-  it('adds the scrolled class after scrolling past 20px', () => {
+  it('adds the scrolled class after scrolling past 20px', async () => {
     const { container } = render(<Navbar />)
     const nav = container.querySelector('nav')
     expect(nav?.className).not.toMatch(/scrolled/)
 
-    act(() => {
+    await act(async () => {
       Object.defineProperty(window, 'scrollY', { value: 50, configurable: true })
       window.dispatchEvent(new Event('scroll'))
+      // O cálculo agora roda dentro de requestAnimationFrame (throttle
+      // do scroll-spy) — espera o próximo frame antes de checar o estado
+      await new Promise((resolve) => requestAnimationFrame(resolve))
     })
 
     expect(nav?.className).toMatch(/scrolled/)

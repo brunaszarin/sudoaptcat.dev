@@ -20,6 +20,11 @@
 }
 
 .logo {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   font-family: var(--font-pixel);
   font-size: 17px;
   font-weight: 500;
@@ -52,6 +57,10 @@
 }
 
 .link:hover {
+  color: var(--color-neon);
+}
+
+.linkActive {
   color: var(--color-neon);
 }
 
