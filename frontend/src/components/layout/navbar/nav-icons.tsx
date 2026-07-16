@@ -66,3 +66,33 @@ export function MailIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+/* Livro — ícone "blog" */
+export function BlogIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 10 9" className={className} shapeRendering="crispEdges" fill="currentColor" aria-hidden="true">
+      <rect x="2" y="0" width="6" height="1" />
+      <rect x="1" y="1" width="1" height="7" />
+      <rect x="8" y="1" width="1" height="7" />
+      <rect x="2" y="8" width="6" height="1" />
+      <rect x="3" y="2" width="4" height="1" />
+      <rect x="3" y="4" width="4" height="1" />
+      <rect x="3" y="6" width="4" height="1" />
+    </svg>
+  )
+}
+
+/* Lixeira — ícone de easter egg */
+export function TrashIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 10 10" className={className} shapeRendering="crispEdges" fill="currentColor" aria-hidden="true">
+      <rect x="3" y="0" width="4" height="1" />
+      <rect x="1" y="1" width="8" height="1" />
+      <rect x="2" y="2" width="1" height="7" />
+      <rect x="7" y="2" width="1" height="7" />
+      <rect x="2" y="8" width="6" height="1" />
+      <rect x="3" y="3" width="1" height="5" />
+      <rect x="6" y="3" width="1" height="5" />
+    </svg>
+  )
+}

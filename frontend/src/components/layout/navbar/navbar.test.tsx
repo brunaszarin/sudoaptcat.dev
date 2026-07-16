@@ -1,6 +1,11 @@
 import { render, screen, fireEvent, act, within } from '@testing-library/react'
 import { Navbar } from './navbar'
 
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/',
+  useRouter: () => ({ push: jest.fn() }),
+}))
+
 describe('Navbar', () => {
   beforeEach(() => {
     document.body.innerHTML = ''

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Pixelify_Sans, Bricolage_Grotesque } from 'next/font/google'
 import { Providers } from './providers'
+import { Navbar } from '@/components/layout/navbar'
 import './globals.css'
 
 const pixelFont = Pixelify_Sans({
@@ -36,7 +37,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${pixelFont.variable} ${bricolage.variable}`}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   )

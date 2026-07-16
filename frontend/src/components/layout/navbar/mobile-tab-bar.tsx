@@ -1,30 +1,40 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { HomeIcon, UserIcon, MonitorIcon, MailIcon } from './nav-icons'
+import { usePathname, useRouter } from 'next/navigation'
+import { HomeIcon, UserIcon, MonitorIcon, BlogIcon, MailIcon } from './nav-icons'
 import styles from './mobile-tab-bar.module.css'
 
 const TABS = [
   { id: 'home', label: 'home', Icon: HomeIcon },
   { id: 'about', label: 'about', Icon: UserIcon },
   { id: 'projects', label: 'projects', Icon: MonitorIcon },
+  { id: 'blog', label: 'blog', Icon: BlogIcon },
   { id: 'contact', label: 'contact', Icon: MailIcon },
 ]
 
-// A partir de quantos px de scroll a tab bar aparece — evita competir
-// visualmente com os botões do Hero logo na primeira tela
 const SHOW_THRESHOLD = 120
 
 export function MobileTabBar() {
   const [active, setActive] = useState('home')
   const [visible, setVisible] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
+  const isHome = pathname === '/'
 
   useEffect(() => {
+    if (!isHome) {
+      // Fora da home não temos as seções pra observar — só marca "blog"
+      // como ativo quando estamos dentro de /blog
+      setActive(pathname.startsWith('/blog') ? 'blog' : '')
+      setVisible(true)
+      return
+    }
+
     let ticking = false
 
     function computeState() {
       ticking = false
-
       setVisible(window.scrollY > SHOW_THRESHOLD)
 
       const middle = window.scrollY + window.innerHeight / 2
@@ -49,10 +59,18 @@ export function MobileTabBar() {
     computeState()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isHome, pathname])
 
-  function scrollToSection(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  function handleClick(id: string) {
+    if (id === 'blog') {
+      router.push('/blog')
+      return
+    }
+    if (isHome) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      router.push(`/#${id}`)
+    }
   }
 
   return (
@@ -66,7 +84,7 @@ export function MobileTabBar() {
           <button
             key={id}
             className={styles.item}
-            onClick={() => scrollToSection(id)}
+            onClick={() => handleClick(id)}
             aria-current={isActive ? 'page' : undefined}
           >
             {isActive && (
