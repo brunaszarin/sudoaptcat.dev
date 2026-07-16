@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import styles from './typing-cat.module.css'
 
+// Os frames ficam TODOS no DOM — trocamos só a visibilidade,
+// evitando requisições de rede a cada troca de frame
 const FRAMES = [
   '/assets/computer1.png',
   '/assets/computer2.png',
@@ -30,10 +32,17 @@ export function TypingCat() {
   }, [])
 
   return (
-    <img
-      src={FRAMES[frame]}
-      alt="pixel cat typing on a computer"
-      className={styles.cat}
-    />
+    <div className={styles.wrap}>
+      {FRAMES.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt={i === 0 ? 'pixel cat typing on a computer' : ''}
+          aria-hidden={i === 0 ? undefined : true}
+          className={styles.cat}
+          style={{ opacity: i === frame ? 1 : 0 }}
+        />
+      ))}
+    </div>
   )
 }

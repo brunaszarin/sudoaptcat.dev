@@ -1,4 +1,10 @@
+.wrap {
+  display: grid;
+  width: 200px;
+}
+
 .cat {
+  grid-area: 1 / 1;
   width: 200px;
   height: auto;
   image-rendering: pixelated;
