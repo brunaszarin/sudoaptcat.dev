@@ -27,6 +27,7 @@ management:
         enabled: true
 
 app:
+  api-key: ${API_KEY:changeme-local-dev-key}
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001}
 
