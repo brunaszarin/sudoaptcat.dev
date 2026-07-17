@@ -54,4 +54,13 @@ public class PostService {
         Post saved = repository.save(post);
         return PostResponse.from(saved);
     }
+
+    // Apaga um post pelo id
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "post not found");
+        }
+        repository.deleteById(id);
+    }
 }

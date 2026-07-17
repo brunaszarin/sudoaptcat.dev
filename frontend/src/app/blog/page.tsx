@@ -76,13 +76,10 @@ function BlogPage() {
           {secondary && (
             <Link href={`/blog/${secondary.slug}`} className={styles.secondaryCard}>
               <div className={styles.secondaryInner}>
-                <div className={styles.secondaryCover}>
-                  <Cover post={secondary} fallbackClassName={styles.coverIconSm} imageSizes="(max-width: 768px) 100vw, 40vw" />
-                </div>
-                <div className={styles.secondaryBody}>
+                <Cover post={secondary} fallbackClassName={styles.coverIconSm} imageSizes="(max-width: 768px) 100vw, 40vw" />
+                <div className={styles.secondaryOverlay}>
                   <p className={styles.dateSm}>{formatDate(secondary.createdAt)}</p>
                   <h3 className={styles.secondaryTitle}>{secondary.title}</h3>
-                  <BlogIcon className={styles.footerIcon} />
                 </div>
               </div>
             </Link>

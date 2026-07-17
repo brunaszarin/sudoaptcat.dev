@@ -36,4 +36,11 @@ public class PostController {
     public PostResponse createPost(@Valid @RequestBody CreatePostRequest request) {
         return service.create(request);
     }
+
+    // DELETE /api/posts/{id} — apaga um post
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable Long id) {
+        service.delete(id);
+    }
 }

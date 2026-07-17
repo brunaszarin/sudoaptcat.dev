@@ -37,6 +37,7 @@
   text-decoration: none;
   display: block;
   background: var(--color-neon);
+  transition: filter 0.2s ease;
   clip-path: polygon(
     10px 0, calc(100% - 10px) 0, calc(100% - 5px) 0, calc(100% - 5px) 5px,
     100% 5px, 100% 10px, 100% calc(100% - 10px), 100% calc(100% - 5px),
@@ -44,6 +45,17 @@
     10px 100%, 5px 100%, 5px calc(100% - 5px), 0 calc(100% - 5px), 0 calc(100% - 10px),
     0 10px, 0 5px, 5px 5px, 5px 0
   );
+}
+
+.featuredCard:hover,
+.secondaryCard:hover,
+.card:hover {
+  filter: brightness(1.3);
+}
+
+.featuredCard:hover .coverImage,
+.secondaryCard:hover .coverImage {
+  transform: scale(1.05);
 }
 
 .secondaryCard,
@@ -82,6 +94,7 @@
 
 .coverImage {
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .coverIconLg {
@@ -116,37 +129,31 @@
 }
 
 .secondaryInner {
-  height: 320px;
-  display: flex;
-  flex-direction: column;
-}
-
-.secondaryCover {
   position: relative;
-  height: 110px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   overflow: hidden;
 }
 
 .coverIconSm {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   color: rgba(136, 204, 0, 0.4);
 }
 
-.secondaryBody {
-  padding: 12px 14px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.secondaryOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 60%);
+  padding: 14px 16px 12px;
 }
 
 .dateSm {
-  color: #4d7200;
+  color: var(--color-neon);
   font-family: var(--font-sans);
   font-size: 10px;
   margin-bottom: 4px;
@@ -155,8 +162,8 @@
 .secondaryTitle {
   color: #f0f0f0;
   font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   line-height: 1.35;
 }
 
