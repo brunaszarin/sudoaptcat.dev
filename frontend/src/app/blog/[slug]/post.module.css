@@ -135,13 +135,25 @@
   margin: 24px 0 12px;
 }
 
-.body ul,
-.body ol {
+.body ul {
+  list-style: disc;
   margin: 0 0 16px 20px;
+  padding-left: 4px;
+}
+
+.body ol {
+  list-style: decimal;
+  margin: 0 0 16px 20px;
+  padding-left: 4px;
 }
 
 .body li {
   margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+.body li::marker {
+  color: var(--color-neon);
 }
 
 .body a {
