@@ -21,6 +21,29 @@ export function Navbar() {
   const router = useRouter()
   const isHome = pathname === '/'
 
+  // O fundo desfocado (scrolled) precisa funcionar em qualquer página,
+  // não só na home — por isso fica num efeito próprio, independente do
+  // scroll-spy dos links (que só faz sentido na home).
+  useEffect(() => {
+    let ticking = false
+
+    function computeScrolled() {
+      ticking = false
+      setScrolled(window.scrollY > 20)
+    }
+
+    function handleScroll() {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(computeScrolled)
+      }
+    }
+
+    computeScrolled()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   useEffect(() => {
     if (!isHome) {
       setActive(pathname.startsWith('/blog') ? 'blog' : '')
@@ -31,7 +54,6 @@ export function Navbar() {
 
     function computeActive() {
       ticking = false
-      setScrolled(window.scrollY > 20)
 
       const middle = window.scrollY + window.innerHeight / 2
       let current = LINKS[0].id
