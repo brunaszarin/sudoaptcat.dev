@@ -24,7 +24,9 @@ function IconGallery() {
             color: '#aaff00',
           }}
         >
-          <Icon style={{ width: 28, height: 28 }} />
+          <div style={{ width: 28, height: 28 }}>
+            <Icon />
+          </div>
           <span style={{ fontSize: 11, fontFamily: 'monospace' }}>{name}</span>
         </div>
       ))}
