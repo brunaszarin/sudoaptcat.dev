@@ -1,0 +1,16 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.pixel {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--color-neon);
+  box-shadow: 0 0 4px rgba(170, 255, 0, 0.6);
+  will-change: transform, opacity;
+}
