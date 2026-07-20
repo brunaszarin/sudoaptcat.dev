@@ -50,8 +50,14 @@ export const WithPosts: Story = {
       makePost({ id: 2, slug: 'deploy-cloud-run', createdAt: '2026-06-28T10:00:00Z' }),
     ]),
   ],
+  parameters: {
+    nextjs: { appDirectory: true },
+  },
 }
 
 export const NoPosts: Story = {
   decorators: [withMockPosts([])],
+  parameters: {
+    nextjs: { appDirectory: true },
+  },
 }
