@@ -1,7 +1,22 @@
 import type { Preview } from '@storybook/nextjs-vite'
+import React from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import '../src/app/globals.css'
 
+// Provider global do React Query — necessário pra qualquer story que use
+// hooks como usePosts/useContact, que dependem de um QueryClient no contexto
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+})
+
 const preview: Preview = {
+  decorators: [
+    (Story) => (
+      <QueryClientProvider client={queryClient}>
+        <Story />
+      </QueryClientProvider>
+    ),
+  ],
   parameters: {
     controls: {
       matchers: {
