@@ -19,6 +19,11 @@ jest.mock('./space-background', () => ({
 jest.mock('./world-strip', () => ({
   WorldStrip: () => <div data-testid="world-strip" />,
   CAT_ANCHOR: 100,
+  getWorldShift: (progress: number) => progress * 1000,
+}))
+
+jest.mock('./buildings-skyline', () => ({
+  BuildingsSkyline: () => <div data-testid="buildings-skyline" />,
 }))
 jest.mock('./walking-cat', () => ({
   WalkingCat: ({ isWalking }: { isWalking: boolean }) => <div data-testid="walking-cat" data-walking={isWalking} />,
