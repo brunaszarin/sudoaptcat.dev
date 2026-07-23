@@ -13,7 +13,7 @@ import { ScrollTrigger } from '@/lib/gsap'
 import styles from './blog-section.module.css'
 
 export function BlogSection() {
-  const { data: posts } = usePosts()
+  const { data: posts, isLoading } = usePosts()
   const [showTrashError, setShowTrashError] = useState(false)
   const [showBlogPrompt, setShowBlogPrompt] = useState(false)
   const [hasPromptedBlogNav, setHasPromptedBlogNav] = useState(false)
@@ -36,6 +36,13 @@ export function BlogSection() {
   // alimenta as mesmas funções puras que o useTerminalScroll usava.
   useGSAP(() => {
     if (!sectionRef.current || !stickyRef.current) return
+    // Só cria o pin depois que a chamada à API terminar (sucesso OU
+    // erro) — antes disso, a altura da seção ainda não é a final, e
+    // recriar o pin (matar + criar de novo) bem no momento em que o
+    // usuário já está dentro da seção pode deixar o conteúdo sem posição
+    // válida. Espera terminar de carregar, não especificamente "ter
+    // posts" — assim funciona mesmo se a API estiver fora do ar.
+    if (isLoading) return
 
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
@@ -63,7 +70,7 @@ export function BlogSection() {
       trigger.kill()
       clearTimeout(refreshId)
     }
-  }, [recentPosts.length])
+  }, [isLoading])
 
   // Relógio da taskbar — só no cliente, evita erro de hidratação
   useEffect(() => {
