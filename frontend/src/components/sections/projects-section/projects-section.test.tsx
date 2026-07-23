@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { ProjectsSection } from './projects-section'
 
 jest.mock('@/hooks/useCatWalk', () => ({
@@ -56,7 +56,9 @@ jest.mock('@/lib/gsap', () => ({
 }))
 
 function fireScrollUpdate(progress: number, direction = 1) {
-  capturedOnUpdate?.({ progress, direction })
+  act(() => {
+    capturedOnUpdate?.({ progress, direction })
+  })
 }
 
 describe('ProjectsSection', () => {
@@ -66,7 +68,7 @@ describe('ProjectsSection', () => {
 
   it('renders the section title', () => {
     render(<ProjectsSection />)
-    expect(screen.getByText("some places I've already been")).toBeInTheDocument()
+    expect(screen.getByText("some places I've been")).toBeInTheDocument()
   })
 
   it('renders the world strip, cat and controls hint', () => {

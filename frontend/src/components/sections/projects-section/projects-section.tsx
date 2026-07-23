@@ -25,6 +25,8 @@ export function ProjectsSection() {
 
   const [progress, setProgress] = useState(0)
   const [facingLeft, setFacingLeft] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Combina os refs de scroll do gato + fade na seção externa (500vh)
   const setSectionRefs = (node: HTMLElement | null) => {
@@ -58,10 +60,20 @@ export function ProjectsSection() {
         setProgress(self.progress)
         if (self.direction === -1) setFacingLeft(true)
         else if (self.direction === 1) setFacingLeft(false)
+
+        // "Anda" só enquanto o scroll está de fato em movimento — desliga
+        // sozinho 120ms depois do último disparo, mesma lógica que o
+        // useCatWalk original tinha antes da migração pro scrub
+        setIsScrolling(true)
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 120)
       },
     })
 
-    return () => trigger.kill()
+    return () => {
+      trigger.kill()
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+    }
   }, [])
 
   // O fade-in da seção (fade-section/is-visible) aplica um translateY até
@@ -92,7 +104,7 @@ export function ProjectsSection() {
 
         <div className={styles.header}>
           <p className={styles.label}>my journey</p>
-          <h2 className={styles.title}>some places I&apos;ve already been</h2>
+          <h2 className={styles.title}>some places I&apos;ve been </h2>
         </div>
 
         <div className={styles.stage}>
@@ -110,7 +122,7 @@ export function ProjectsSection() {
             }}
           >
             <WalkingCat
-              isWalking={progress > 0 && progress < 1}
+              isWalking={isScrolling && progress > 0 && progress < 1}
               facingLeft={facingLeft}
             />
           </div>
