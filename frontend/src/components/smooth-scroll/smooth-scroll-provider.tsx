@@ -1,7 +1,7 @@
 'use client'
 
 import { useGSAP } from '@gsap/react'
-import { ScrollSmoother } from '@/lib/gsap'
+import { ScrollSmoother, ScrollTrigger } from '@/lib/gsap'
 
 interface SmoothScrollProviderProps {
   children: React.ReactNode
@@ -22,7 +22,17 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       effects: false,
     })
 
-    return () => smoother.kill()
+    // Componentes filhos (ProjectsSection, BlogSection) montam ANTES do
+    // pai — o efeito deles cria seus próprios ScrollTrigger.pin() antes
+    // do ScrollSmoother sequer existir, calculando posições erradas.
+    // Um refresh geral logo após a criação do smoother corrige todos os
+    // pins que já foram criados "cedo demais".
+    const id = requestAnimationFrame(() => ScrollTrigger.refresh())
+
+    return () => {
+      cancelAnimationFrame(id)
+      smoother.kill()
+    }
   }, [])
 
   return (
