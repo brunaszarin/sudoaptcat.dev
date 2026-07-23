@@ -13,17 +13,27 @@ jest.mock('@/hooks/usePosts', () => ({
   usePosts: () => mockUsePosts(),
 }))
 
-let mockSelectedIndex = -1
-let mockPowerLevel = 1
-const mockSectionRef = { current: document.createElement('section') }
+// Captura o onUpdate registrado pelo componente no ScrollTrigger.create,
+// pra podermos simular qualquer valor de progresso nos testes — sem isso,
+// o pin/scrub de verdade nunca dispara dentro do jsdom
+let capturedOnUpdate: ((self: { progress: number; direction: number }) => void) | null = null
 
-jest.mock('@/hooks/useTerminalScroll', () => ({
-  useTerminalScroll: () => ({
-    sectionRef: mockSectionRef,
-    powerLevel: mockPowerLevel,
-    selectedIndex: mockSelectedIndex,
-  }),
+jest.mock('@/lib/gsap', () => ({
+  gsap: {},
+  ScrollTrigger: {
+    create: (config: { onUpdate?: typeof capturedOnUpdate }) => {
+      capturedOnUpdate = config.onUpdate ?? null
+      return { kill: jest.fn() }
+    },
+    refresh: jest.fn(),
+  },
 }))
+
+function fireScrollUpdate(progress: number) {
+  act(() => {
+    capturedOnUpdate?.({ progress, direction: 1 })
+  })
+}
 
 function makePost(overrides: Partial<Post> = {}): Post {
   return {
@@ -41,19 +51,14 @@ function makePost(overrides: Partial<Post> = {}): Post {
 }
 
 describe('BlogSection', () => {
-  let openSpy: jest.SpyInstance
-
   beforeEach(() => {
     pushMock.mockClear()
-    mockSelectedIndex = -1
-    mockPowerLevel = 0.5 // abaixo do threshold de 0.98, evita disparar o prompt sozinho
+    capturedOnUpdate = null
     mockUsePosts.mockReturnValue({ data: [makePost()] })
-    openSpy = jest.spyOn(window, 'open').mockImplementation(() => null)
     jest.useFakeTimers()
   })
 
   afterEach(() => {
-    openSpy.mockRestore()
     jest.useRealTimers()
   })
 
@@ -95,27 +100,29 @@ describe('BlogSection', () => {
   })
 
   it('shows the blog navigation prompt once powerLevel reaches the threshold', () => {
-    mockPowerLevel = 1
+    // progress 0.5 = meio do trajeto = powerLevel máximo (totalmente "ligado")
     render(<BlogSection />)
+    fireScrollUpdate(0.5)
     expect(screen.getByText('open the full blog page?')).toBeInTheDocument()
   })
 
   it('does not show the blog prompt when powerLevel is below the threshold', () => {
-    mockPowerLevel = 0.5
+    // progress perto da ponta (0.05) = powerLevel baixo (ainda "ligando")
     render(<BlogSection />)
+    fireScrollUpdate(0.05)
     expect(screen.queryByText('open the full blog page?')).not.toBeInTheDocument()
   })
 
   it('navigates to /blog when "yes" is clicked on the prompt', () => {
-    mockPowerLevel = 1
     render(<BlogSection />)
+    fireScrollUpdate(0.5)
     fireEvent.click(screen.getByText('yes'))
     expect(pushMock).toHaveBeenCalledWith('/blog')
   })
 
   it('dismisses the prompt when "no" is clicked, without navigating', () => {
-    mockPowerLevel = 1
     render(<BlogSection />)
+    fireScrollUpdate(0.5)
     fireEvent.click(screen.getByText('no'))
     expect(screen.queryByText('open the full blog page?')).not.toBeInTheDocument()
     expect(pushMock).not.toHaveBeenCalled()
@@ -123,8 +130,6 @@ describe('BlogSection', () => {
 
   it('updates the clock on mount', () => {
     render(<BlogSection />)
-    // O relógio é preenchido de forma assíncrona pelo useEffect — só
-    // confirmamos que o elemento existe e não está mais vazio
     act(() => {
       jest.advanceTimersByTime(0)
     })
