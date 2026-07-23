@@ -4,7 +4,7 @@ import { CompanyCard } from './company-card'
 import styles from './world-strip.module.css'
 
 // Distância entre cada empresa (em px na faixa do mundo)
-const STOP_SPACING = 620
+const STOP_SPACING = 900
 // Onde a primeira empresa começa
 const FIRST_STOP = 400
 // Largura total da faixa do mundo
@@ -28,10 +28,11 @@ const EXIT_MARGIN = 60
 // O mundo termina de deslizar em 85% do scroll (o resto é pro gato sair)
 const WORLD_END = 0.85
 
-// Calcula o deslocamento horizontal do mundo pra um dado progresso —
-// extraído como função própria pra outras camadas (tipo o skyline de
-// prédios) poderem sincronizar o próprio movimento com o mesmo valor,
-// sem duplicar a fórmula.
+// Distância (em px) que o gato precisa estar do centro do prédio pro card
+// ativar — calibrado pela largura real do prédio (180px, ±90px do centro),
+// não mais uma fração arbitrária do espaçamento entre empresas
+const ACTIVE_THRESHOLD = 100
+
 export function getWorldShift(progress: number) {
   const worldProgress = Math.min(1, progress / WORLD_END)
   const lastCardRightEdge = stopX(EXPERIENCES.length - 1) + 60 + CARD_WIDTH
@@ -58,12 +59,12 @@ export function WorldStrip({ progress }: WorldStripProps) {
       <div className={styles.ground} />
       <div className={styles.groundTop} />
 
-      {/* Casinhas + cards de cada empresa */}
+      {/* Prédios + cards de cada empresa */}
       {EXPERIENCES.map((exp, i) => {
-        // Quão "ativa" está esta empresa (o gato está na frente dela?)
+        // Quão "ativa" está esta empresa (o gato está na frente do prédio?)
         const catWorldX = shift + CAT_ANCHOR
         const distance = Math.abs(catWorldX - stopX(i))
-        const isActive = distance < STOP_SPACING / 2.2
+        const isActive = distance < ACTIVE_THRESHOLD
 
         return (
           <div key={exp.id}>
@@ -75,10 +76,11 @@ export function WorldStrip({ progress }: WorldStripProps) {
               <CompanyBuilding />
             </div>
 
-            {/* Card com detalhes */}
+            {/* Card com detalhes — começa bem depois do prédio terminar
+                (prédio vai até stopX+90), com respiro de verdade entre eles */}
             <div
               className={`${styles.cardSlot} ${isActive ? styles.cardActive : ''}`}
-              style={{ left: `${stopX(i) + 60}px` }}
+              style={{ left: `${stopX(i) + 150}px` }}
             >
               <CompanyCard experience={exp} />
             </div>

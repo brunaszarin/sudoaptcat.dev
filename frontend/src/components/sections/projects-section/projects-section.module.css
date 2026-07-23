@@ -6,8 +6,9 @@
 }
 
 .sticky {
-  position: sticky;
-  top: 0;
+  /* position: sticky removido — agora é travado via ScrollTrigger.pin()
+     no JS, técnica compatível com o ScrollSmoother (sticky/fixed quebram
+     dentro do wrapper transformado do ScrollSmoother) */
   height: 100vh;
   height: 100dvh;
   display: flex;
