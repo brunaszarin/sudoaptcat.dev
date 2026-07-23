@@ -1,5 +1,7 @@
 'use client'
 
+import { useRef, useState, useEffect } from 'react'
+import { useGSAP } from '@gsap/react'
 import { useCatWalk } from '@/hooks/useCatWalk'
 import { useMouseParallax } from '@/hooks/useMouseParallax'
 import { SpaceBackground } from './space-background'
@@ -9,19 +11,68 @@ import { WalkingCat } from './walking-cat'
 import { useFadeIn } from '@/hooks/useFadeIn'
 import { ControlsHint } from './controls-hint'
 import { useKeyboardScroll } from '@/hooks/useKeyboardScroll'
+import { ScrollTrigger } from '@/lib/gsap'
 import styles from './projects-section.module.css'
 
 export function ProjectsSection() {
-  const { sectionRef, progress, facingLeft } = useCatWalk()
+  // Usa o useCatWalk só pelo sectionRef (gatilho do pin + do teclado) —
+  // o progresso de verdade agora vem suavizado do ScrollTrigger abaixo
+  const { sectionRef } = useCatWalk()
   const { containerRef, offset } = useMouseParallax()
   const { ref: fadeRef, isVisible } = useFadeIn<HTMLElement>(0.01)
+  const stickyRef = useRef<HTMLDivElement>(null)
   useKeyboardScroll(sectionRef)
 
-  // Combina os dois refs (scroll do gato + fade) no mesmo elemento
-  const setRefs = (node: HTMLElement | null) => {
+  const [progress, setProgress] = useState(0)
+  const [facingLeft, setFacingLeft] = useState(false)
+
+  // Combina os refs de scroll do gato + fade na seção externa (500vh)
+  const setSectionRefs = (node: HTMLElement | null) => {
     sectionRef.current = node
     fadeRef.current = node
   }
+
+  // Combina os refs de paralaxe do mouse + o alvo do pin na div interna
+  const setStickyRefs = (node: HTMLDivElement | null) => {
+    containerRef.current = node
+    stickyRef.current = node
+  }
+
+  // Trava a div .sticky na tela enquanto a <section> externa (500vh) rola —
+  // usa ScrollTrigger.pin() em vez de position:sticky (compatível com o
+  // ScrollSmoother). O mesmo trigger também entrega o progresso via scrub,
+  // suavizado (com um pequeno atraso elástico), em vez do valor bruto do
+  // scroll — é isso que deixa o andar do gato suave.
+  useGSAP(() => {
+    if (!sectionRef.current || !stickyRef.current) return
+
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      pin: stickyRef.current,
+      start: 'top top',
+      end: 'bottom bottom',
+      pinSpacing: false,
+      pinType: 'transform',
+      scrub: 0.6,
+      onUpdate: (self) => {
+        setProgress(self.progress)
+        if (self.direction === -1) setFacingLeft(true)
+        else if (self.direction === 1) setFacingLeft(false)
+      },
+    })
+
+    return () => trigger.kill()
+  }, [])
+
+  // O fade-in da seção (fade-section/is-visible) aplica um translateY até
+  // a seção aparecer — se o ScrollTrigger calcular a posição do pin antes
+  // desse transform "assentar", ele guarda um valor levemente errado.
+  // Recalcula assim que o fade termina (mesma duração do CSS: 0.8s).
+  useEffect(() => {
+    if (!isVisible) return
+    const id = setTimeout(() => ScrollTrigger.refresh(), 850)
+    return () => clearTimeout(id)
+  }, [isVisible])
 
   // Nos últimos 15% da jornada, o gato "destrava" e anda pra fora pela direita
   const EXIT_START = 0.85
@@ -33,10 +84,10 @@ export function ProjectsSection() {
   return (
     <section
       id="projects"
-      ref={setRefs}
+      ref={setSectionRefs}
       className={`${styles.projects} fade-section ${isVisible ? 'is-visible' : ''}`}
     >
-      <div className={styles.sticky} ref={containerRef}>
+      <div className={styles.sticky} ref={setStickyRefs}>
         <SpaceBackground mouseOffset={offset} />
 
         <div className={styles.header}>

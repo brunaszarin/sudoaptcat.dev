@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Pixelify_Sans, Bricolage_Grotesque } from 'next/font/google'
 import { Providers } from './providers'
 import { Navbar } from '@/components/layout/navbar'
+import { SmoothScrollProvider } from '@/components/smooth-scroll/smooth-scroll-provider'
 import './globals.css'
 
 const pixelFont = Pixelify_Sans({
@@ -27,6 +28,15 @@ export const metadata: Metadata = {
     url: 'https://brunaszarin.dev',
     siteName: 'brunaszarin.dev',
   },
+  icons: {
+    icon: [
+      { url: '/assets/icons/icon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/assets/icons/icon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/assets/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/assets/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/assets/icons/apple-touch-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -39,7 +49,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Navbar />
-          {children}
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
         </Providers>
       </body>
     </html>

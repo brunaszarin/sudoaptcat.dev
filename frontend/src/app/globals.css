@@ -94,3 +94,15 @@ a, button, [role="button"] {
     padding-bottom: calc(var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ——— Estrutura exigida pelo GSAP ScrollSmoother ——— */
+#smooth-wrapper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#smooth-content {
+  overflow: visible;
+  width: 100%;
+}
