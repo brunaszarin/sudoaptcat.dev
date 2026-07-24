@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { EXPERIENCES } from '@/data/experiences'
 import { CompanyBuilding } from './company-building'
 import { CompanyCard } from './company-card'
@@ -33,11 +36,31 @@ const WORLD_END = 0.85
 // não mais uma fração arbitrária do espaçamento entre empresas
 const ACTIVE_THRESHOLD = 100
 
+// Deslocamento do card em relação ao prédio — menor no mobile, onde a tela
+// estreita faz o respiro de 150px parecer exagerado/distante demais
+const CARD_OFFSET_DESKTOP = 150
+const CARD_OFFSET_MOBILE = 80
+
 export function getWorldShift(progress: number) {
   const worldProgress = Math.min(1, progress / WORLD_END)
   const lastCardRightEdge = stopX(EXPERIENCES.length - 1) + 60 + CARD_WIDTH
   const maxShift = lastCardRightEdge + EXIT_MARGIN - CAT_ANCHOR
   return worldProgress * maxShift
+}
+
+function useCardOffset() {
+  const [offset, setOffset] = useState(CARD_OFFSET_DESKTOP)
+
+  useEffect(() => {
+    function update() {
+      setOffset(window.innerWidth <= 768 ? CARD_OFFSET_MOBILE : CARD_OFFSET_DESKTOP)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  return offset
 }
 
 interface WorldStripProps {
@@ -46,6 +69,7 @@ interface WorldStripProps {
 
 export function WorldStrip({ progress }: WorldStripProps) {
   const shift = getWorldShift(progress)
+  const cardOffset = useCardOffset()
 
   return (
     <div
@@ -76,11 +100,11 @@ export function WorldStrip({ progress }: WorldStripProps) {
               <CompanyBuilding />
             </div>
 
-            {/* Card com detalhes — começa bem depois do prédio terminar
-                (prédio vai até stopX+90), com respiro de verdade entre eles */}
+            {/* Card com detalhes — o offset em relação ao prédio muda
+                conforme o tamanho da tela (mais próximo no mobile) */}
             <div
               className={`${styles.cardSlot} ${isActive ? styles.cardActive : ''}`}
-              style={{ left: `${stopX(i) + 150}px` }}
+              style={{ left: `${stopX(i) + cardOffset}px` }}
             >
               <CompanyCard experience={exp} />
             </div>
