@@ -10,9 +10,22 @@ interface TerminalProps {
   selectedIndex: number
   powerLevel: number
   onOpenPost: (slug: string) => void
+  currentPage: number
+  totalPages: number
+  onPrevPage: () => void
+  onNextPage: () => void
 }
 
-export function Terminal({ posts, selectedIndex, powerLevel, onOpenPost }: TerminalProps) {
+export function Terminal({
+  posts,
+  selectedIndex,
+  powerLevel,
+  onOpenPost,
+  currentPage,
+  totalPages,
+  onPrevPage,
+  onNextPage,
+}: TerminalProps) {
   return (
     <div
       className={styles.terminalOuter}
@@ -57,12 +70,38 @@ export function Terminal({ posts, selectedIndex, powerLevel, onOpenPost }: Termi
             </button>
           ))}
 
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.pageArrow}
+                onClick={onPrevPage}
+                disabled={currentPage === 0}
+                aria-label="previous page"
+              >
+                ‹
+              </button>
+              <span className={styles.pageLabel}>
+                page {currentPage + 1}/{totalPages}
+              </span>
+              <button
+                className={styles.pageArrow}
+                onClick={onNextPage}
+                disabled={currentPage === totalPages - 1}
+                aria-label="next page"
+              >
+                ›
+              </button>
+            </div>
+          )}
+
           <p className={styles.promptEnd}>
             <span className={styles.promptSymbol}>$</span>{' '}
             <span className={styles.hint}>
               {selectedIndex >= 0
                 ? 'press enter or click to open'
-                : 'use ↑ ↓ or scroll to navigate'}
+                : totalPages > 1
+                  ? 'use ↑ ↓ to select, ← → to change page'
+                  : 'use ↑ ↓ or scroll to navigate'}
             </span>
             <span className={styles.cursor}>_</span>
           </p>

@@ -200,9 +200,10 @@
 
 .desktopIcons {
   position: absolute;
-  top: 50%;
+  /* 100px reserva espaço suficiente pro navbar fixo (position:fixed,
+     ~80-90px de altura) não sobrepor os ícones */
+  top: 100px;
   left: 24px;
-  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -228,8 +229,16 @@
 }
 
 .desktopIconSvg {
+  display: block;
   width: 26px;
   height: 26px;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .desktopIconLabel {
@@ -393,9 +402,8 @@
 
 @media (max-width: 640px) {
   .desktopIcons {
-    top: 50%;
+    top: 80px;
     left: 12px;
-    transform: translateY(-50%);
     gap: 14px;
   }
 
@@ -411,4 +419,63 @@
   .taskbar {
     bottom: var(--mobile-tabbar-height, 68px);
   }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0;
+  margin-top: 4px;
+  border-top: 1px solid #1a2900;
+}
+
+.pageArrow {
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--color-neon);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: opacity 0.2s;
+}
+
+.pageArrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.pageLabel {
+  color: #7bc400;
+  font-size: 11px;
+}
+
+.errorFilled {
+  appearance: none;
+  background: var(--color-neon);
+  border: none;
+  color: #0d1a05;
+  padding: 4px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  clip-path: polygon(
+    5px 0, calc(100% - 5px) 0, calc(100% - 2px) 0, calc(100% - 2px) 2px,
+    100% 2px, 100% 5px, 100% calc(100% - 5px), 100% calc(100% - 2px),
+    calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, calc(100% - 5px) 100%,
+    5px 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 calc(100% - 5px),
+    0 5px, 0 2px, 2px 2px, 2px 0
+  );
+}
+
+.errorBarDraggable {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.errorBarDraggable:active {
+  cursor: grabbing;
 }
