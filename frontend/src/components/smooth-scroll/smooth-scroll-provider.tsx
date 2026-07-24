@@ -22,6 +22,13 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       effects: false,
     })
 
+    // No mobile, o scroll nativo por toque tem timing/momentum diferente
+    // por dispositivo, e isso conflita com pins ativos (ScrollTrigger.pin)
+    // — o normalizeScroll assume o controle do scroll pela thread de JS,
+    // sincronizando os repaints e evitando o "pulo" do pin. É a correção
+    // oficial recomendada pelo GSAP pra essa combinação.
+    ScrollTrigger.normalizeScroll(true)
+
     // Componentes filhos (ProjectsSection, BlogSection) montam ANTES do
     // pai — o efeito deles cria seus próprios ScrollTrigger.pin() antes
     // do ScrollSmoother sequer existir, calculando posições erradas.
@@ -31,6 +38,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     return () => {
       cancelAnimationFrame(id)
+      ScrollTrigger.normalizeScroll(false)
       smoother.kill()
     }
   }, [])
