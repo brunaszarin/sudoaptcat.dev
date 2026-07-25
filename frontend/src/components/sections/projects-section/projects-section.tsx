@@ -86,12 +86,12 @@ export function ProjectsSection() {
     return () => clearTimeout(id)
   }, [isVisible])
 
-  // Nos últimos 15% da jornada, o gato "destrava" e anda pra fora pela direita
-  const EXIT_START = 0.85
-  const catExit =
-    progress > EXIT_START
-      ? ((progress - EXIT_START) / (1 - EXIT_START)) * 1400
-      : 0
+  // Assim que o mundo termina de deslizar (mesmo corte que o WorldStrip
+  // usa pra WORLD_END), o gato sai de vez pela direita — não depende mais
+  // de continuar rolando um trecho extra depois disso (0.85 a 1.0), que
+  // na prática quase nunca era percorrido, deixando o gato "preso"
+  const WORLD_END = 0.85
+  const catExit = progress >= WORLD_END ? 1400 : 0
 
   return (
     <section
