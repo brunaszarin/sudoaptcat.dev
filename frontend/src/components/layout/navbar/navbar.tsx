@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Tooltip } from '@/components/ui/tooltip'
+import { ScrollSmoother } from '@/lib/gsap'
 import { MobileTabBar } from './mobile-tab-bar'
 import styles from './navbar.module.css'
 
@@ -79,9 +80,20 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [isHome, pathname])
 
+  // scrollIntoView() e window.scrollTo() não são "conscientes" do
+  // ScrollSmoother (que controla o scroll via transform por trás dos
+  // panos) — usar eles diretamente dessincroniza a posição real da
+  // página, revelando área preta e travando o scroll depois. O método
+  // scrollTo() do próprio smoother resolve isso, mantendo tudo em sync.
   function goToSection(id: string) {
     if (isHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      const smoother = ScrollSmoother.get()
+      const el = document.getElementById(id)
+      if (smoother && el) {
+        smoother.scrollTo(el, true)
+      } else {
+        el?.scrollIntoView({ behavior: 'smooth' })
+      }
     } else {
       router.push(`/#${id}`)
     }
@@ -89,7 +101,12 @@ export function Navbar() {
 
   function goHome() {
     if (isHome) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      const smoother = ScrollSmoother.get()
+      if (smoother) {
+        smoother.scrollTo(0, true)
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     } else {
       router.push('/')
     }
