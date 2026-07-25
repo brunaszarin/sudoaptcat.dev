@@ -3,8 +3,8 @@ title: Shell Scripts for Lazy People: Automate Your Linux Like a Lazy Cat
 slug: shell-scripts-for-lazy-people
 excerpt: Stop repeating the same terminal commands every day. A few lines of shell script can save you time — and let you nap like a proper cat.
 tags: [linux, shell-script, productivity]
-coverImage:
-published: false
+coverImage: /assets/blog/shell-scripts-for-lazy-people.png
+published: true
 ---
 
 Save commands, gain time to sleep (like any good cat would)

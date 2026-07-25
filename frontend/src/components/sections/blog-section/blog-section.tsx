@@ -9,8 +9,12 @@ import { DesktopIcons } from './desktop-icons'
 import { Terminal } from './terminal'
 import { SystemDialog } from './system-dialog'
 import { Taskbar } from './taskbar'
-import { ScrollTrigger } from '@/lib/gsap'
+import { ScrollSmoother, ScrollTrigger } from '@/lib/gsap'
 import styles from './blog-section.module.css'
+
+// Quantos posts aparecem por "página" dentro do terminal — evita a tela
+// ficar gigante conforme o número de posts publicados cresce
+const PAGE_SIZE = 3
 
 export function BlogSection() {
   const { data: posts } = usePosts()
@@ -24,16 +28,35 @@ export function BlogSection() {
   const stickyRef = useRef<HTMLDivElement>(null)
   const [powerLevel, setPowerLevel] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [currentPage, setCurrentPage] = useState(0)
+  // Guarda o tamanho da página atual numa ref — o onUpdate do pin lê
+  // sempre o valor mais recente daqui, sem precisar que o efeito seja
+  // recriado (evita o bug de perder o pin quando os posts carregam)
+  const pagePostsLengthRef = useRef(0)
 
-  const recentPosts = (posts ?? [])
+  // Todos os posts publicados — não tem mais teto artificial de 5, já que
+  // a paginação (3 por página) cuida de nunca deixar a tela gigante
+  const allPosts = (posts ?? [])
     .filter((p) => p.published)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 5)
+
+  const totalPages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE))
+  const pagePosts = allPosts.slice(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE)
+
+  function goToPrevPage() {
+    setCurrentPage((p) => Math.max(0, p - 1))
+  }
+
+  function goToNextPage() {
+    setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
+  }
 
   // Trava a div .sticky na tela enquanto a <section> externa rola — usa
   // ScrollTrigger.pin() em vez de position:sticky (compatível com o
   // ScrollSmoother). O scrub entrega o progresso já suavizado, que
   // alimenta as mesmas funções puras que o useTerminalScroll usava.
+  // A seleção é calculada com base no tamanho da PÁGINA atual (até 3
+  // itens), não no total de posts — muda de página não exige mais scroll.
   useGSAP(() => {
     if (!sectionRef.current || !stickyRef.current) return
 
@@ -47,23 +70,29 @@ export function BlogSection() {
       scrub: 0.6,
       onUpdate: (self) => {
         setPowerLevel(computePowerLevel(self.progress))
-        setSelectedIndex(computeSelectedIndex(self.progress, recentPosts.length))
+        setSelectedIndex(computeSelectedIndex(self.progress, pagePostsLengthRef.current))
       },
     })
 
-    // A altura da seção depende dos posts carregarem (recentPosts.length
-    // só fica correto depois que a API responde) — o ScrollSmoother mede
-    // a altura da página antes disso, então força um recálculo assim que
-    // o tamanho real é conhecido (o próprio efeito já roda de novo quando
-    // recentPosts.length muda, mas o refresh garante que o ScrollSmoother
-    // também atualiza sua métrica interna de altura total).
+    // A altura da seção agora é baseada só no PAGE_SIZE (3), não no total
+    // de posts — como cada página sempre mostra no máximo 3 itens, a
+    // quantidade de espaço de scroll necessária nunca muda, mesmo que
+    // você publique mais artigos depois.
     const refreshId = setTimeout(() => ScrollTrigger.refresh(), 100)
 
     return () => {
       trigger.kill()
       clearTimeout(refreshId)
     }
+    // Roda só uma vez — o pin nunca precisa ser recriado, mesmo quando os
+    // posts carregam ou a página muda (a ref acima cuida de manter o
+    // cálculo de seleção atualizado sem precisar recriar o ScrollTrigger)
   }, [])
+
+  // Mantém a ref sincronizada sempre que a página atual muda de tamanho
+  useEffect(() => {
+    pagePostsLengthRef.current = pagePosts.length
+  }, [pagePosts.length])
 
   // Relógio da taskbar — só no cliente, evita erro de hidratação
   useEffect(() => {
@@ -95,7 +124,13 @@ export function BlogSection() {
       setShowTrashError(true)
       return
     }
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    const smoother = ScrollSmoother.get()
+    const el = document.getElementById(id)
+    if (smoother && el) {
+      smoother.scrollTo(el, true)
+    } else {
+      el?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   useEffect(() => {
@@ -112,8 +147,14 @@ export function BlogSection() {
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
         window.scrollBy({ top: -window.innerHeight * 0.25, behavior: 'smooth' })
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goToPrevPage()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goToNextPage()
       } else if (e.key === 'Enter' && selectedIndex >= 0) {
-        openPost(recentPosts[selectedIndex].slug)
+        openPost(pagePosts[selectedIndex].slug)
       } else if (e.key === 'Escape') {
         setShowTrashError(false)
         setShowBlogPrompt(false)
@@ -122,14 +163,12 @@ export function BlogSection() {
 
     window.addEventListener('keydown', handleKeydown)
     return () => window.removeEventListener('keydown', handleKeydown)
-  }, [selectedIndex, recentPosts])
+  }, [selectedIndex, pagePosts, totalPages])
 
-  // Altura FIXA no teto máximo (5 posts, o limite do .slice acima) —
-  // independente de quantos posts já carregaram. Isso garante que a
-  // seção nunca muda de tamanho depois de montada, então o pin pode ser
-  // criado imediatamente, sem precisar esperar a API responder.
-  const MAX_POSTS = 5
-  const sectionHeight = `calc(100vh + ${MAX_POSTS * 70 + 60}vh)`
+  // Altura fixa baseada só no PAGE_SIZE (3) — não no total de posts, já
+  // que a paginação garante que a tela nunca mostra mais que isso de uma
+  // vez, independente de quantos artigos você publicar no futuro.
+  const sectionHeight = `calc(100vh + ${PAGE_SIZE * 70 + 60}vh)`
 
   return (
     <section
@@ -147,10 +186,14 @@ export function BlogSection() {
         </div>
 
         <Terminal
-          posts={recentPosts}
+          posts={pagePosts}
           selectedIndex={selectedIndex}
           powerLevel={powerLevel}
           onOpenPost={openPost}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrevPage={goToPrevPage}
+          onNextPage={goToNextPage}
         />
 
         {showTrashError && (
@@ -158,7 +201,8 @@ export function BlogSection() {
             icon="!"
             message="can't open trash — the cat already did that!"
             onClose={() => setShowTrashError(false)}
-            actions={[{ label: 'OK', onClick: () => setShowTrashError(false) }]}
+            draggable
+            actions={[{ label: 'OK', onClick: () => setShowTrashError(false), variant: 'filled' }]}
           />
         )}
 
@@ -167,9 +211,11 @@ export function BlogSection() {
             icon="?"
             message="open the full blog page?"
             onClose={() => setShowBlogPrompt(false)}
+            offsetX={80}
+            draggable
             actions={[
+              { label: 'yes', onClick: () => router.push('/blog'), variant: 'filled' },
               { label: 'no', onClick: () => setShowBlogPrompt(false), variant: 'ghost' },
-              { label: 'yes', onClick: () => router.push('/blog') },
             ]}
           />
         )}

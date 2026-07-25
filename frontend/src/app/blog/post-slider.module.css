@@ -1,0 +1,164 @@
+.slider {
+  position: relative;
+  height: 340px;
+  margin-bottom: 2.5rem;
+}
+
+.sliderInner {
+  position: relative;
+  height: 100%;
+  background: #0a1400;
+  clip-path: polygon(
+    10px 0, calc(100% - 10px) 0, calc(100% - 5px) 0, calc(100% - 5px) 5px,
+    100% 5px, 100% 10px, 100% calc(100% - 10px), 100% calc(100% - 5px),
+    calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, calc(100% - 10px) 100%,
+    10px 100%, 5px 100%, 5px calc(100% - 5px), 0 calc(100% - 5px), 0 calc(100% - 10px),
+    0 10px, 0 5px, 5px 5px, 5px 0
+  );
+  overflow: hidden;
+}
+
+/* Camada isolada só com a borda — desenhada por cima de tudo (z-index 3,
+   acima do overlay), sem fundo nenhum, então nunca "reage" visualmente ao
+   que acontece embaixo dela (nenhum efeito de contraste/brilho aparente) */
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  clip-path: polygon(
+    10px 0, calc(100% - 10px) 0, calc(100% - 5px) 0, calc(100% - 5px) 5px,
+    100% 5px, 100% 10px, 100% calc(100% - 10px), 100% calc(100% - 5px),
+    calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, calc(100% - 10px) 100%,
+    10px 100%, 5px 100%, 5px calc(100% - 5px), 0 calc(100% - 5px), 0 calc(100% - 10px),
+    0 10px, 0 5px, 5px 5px, 5px 0
+  );
+  box-shadow: inset 0 0 0 2px var(--color-neon);
+}
+
+.slideLink {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slideImage {
+  object-fit: cover;
+}
+
+.slideFallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #2f5d00, #0a1400 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideFallbackIcon {
+  width: 64px;
+  height: 64px;
+  color: rgba(170, 255, 0, 0.3);
+}
+
+.slideOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 70%);
+  padding: 24px;
+}
+
+.slideTitle {
+  color: #f0f0f0;
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.slideExcerpt {
+  color: #c0c0c0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  max-width: 500px;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  appearance: none;
+  background: none;
+  border: none;
+  color: rgba(170, 255, 0, 0.6);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.arrow:hover {
+  color: var(--color-neon);
+}
+
+.arrowLeft {
+  left: 14px;
+}
+
+.arrowRight {
+  right: 14px;
+}
+
+.dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  appearance: none;
+  width: 16px;
+  height: 2px;
+  background: rgba(170, 255, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, width 0.2s;
+}
+
+.dotActive {
+  background: var(--color-neon);
+  width: 24px;
+}
+
+@media (max-width: 640px) {
+  .slider {
+    height: 260px;
+  }
+}

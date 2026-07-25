@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { HomeIcon, UserIcon, MonitorIcon, BlogIcon, MailIcon } from './nav-icons'
+import { ScrollSmoother } from '@/lib/gsap'
 import styles from './mobile-tab-bar.module.css'
 
 const TABS = [
-  { id: 'home', label: 'home', Icon: HomeIcon },
-  { id: 'about', label: 'about', Icon: UserIcon },
-  { id: 'projects', label: 'projects', Icon: MonitorIcon },
-  { id: 'blog', label: 'blog', Icon: BlogIcon },
-  { id: 'contact', label: 'contact', Icon: MailIcon },
+  { id: 'home', label: 'home', src: '/assets/icons/home-solid.svg' },
+  { id: 'about', label: 'about', src: '/assets/icons/user-solid.svg' },
+  { id: 'projects', label: 'projects', src: '/assets/icons/folder-solid.svg' },
+  { id: 'blog', label: 'blog', src: '/assets/icons/book-bookmark-solid.svg' },
+  { id: 'contact', label: 'contact', src: '/assets/icons/envelope-solid.svg' },
 ]
 
 const SHOW_THRESHOLD = 120
@@ -67,7 +67,13 @@ export function MobileTabBar() {
       return
     }
     if (isHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      const smoother = ScrollSmoother.get()
+      const el = document.getElementById(id)
+      if (smoother && el) {
+        smoother.scrollTo(el, true)
+      } else {
+        el?.scrollIntoView({ behavior: 'smooth' })
+      }
     } else {
       router.push(`/#${id}`)
     }
@@ -78,7 +84,7 @@ export function MobileTabBar() {
       className={`${styles.bar} ${visible ? styles.visible : ''}`}
       aria-label="mobile navigation"
     >
-      {TABS.map(({ id, label, Icon }) => {
+      {TABS.map(({ id, label, src }) => {
         const isActive = active === id
         return (
           <button
@@ -91,7 +97,14 @@ export function MobileTabBar() {
               <span className={`${styles.activeFill} ${styles.clip}`} aria-hidden="true" />
             )}
             <span className={`${styles.content} ${isActive ? styles.active : ''}`}>
-              <Icon />
+              <span
+                className={styles.icon}
+                style={{
+                  WebkitMaskImage: `url(${src})`,
+                  maskImage: `url(${src})`,
+                }}
+                aria-hidden="true"
+              />
               <span className={styles.label}>{label}</span>
             </span>
           </button>
