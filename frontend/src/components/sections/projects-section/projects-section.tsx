@@ -26,7 +26,20 @@ export function ProjectsSection() {
   const [progress, setProgress] = useState(0)
   const [facingLeft, setFacingLeft] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
+  const [viewportWidth, setViewportWidth] = useState(0)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Largura da viewport, pra calcular quanto o gato precisa andar pra sair
+  // de vez da tela (não dá pra usar um valor fixo em px — em telas largas
+  // um número fixo pequeno demais deixa o gato "parado" visível à direita)
+  useEffect(() => {
+    function update() {
+      setViewportWidth(window.innerWidth)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   // Combina os refs de scroll do gato + fade na seção externa (500vh)
   const setSectionRefs = (node: HTMLElement | null) => {
@@ -86,12 +99,22 @@ export function ProjectsSection() {
     return () => clearTimeout(id)
   }, [isVisible])
 
+  // Largura do sprite do gato (precisa bater com walking-cat.module.css .cat)
+  const CAT_WIDTH = 80
+  // Margem de segurança extra, mesmo espírito do EXIT_MARGIN em world-strip.tsx
+  const EXIT_MARGIN = 60
+
   // Assim que o mundo termina de deslizar (mesmo corte que o WorldStrip
   // usa pra WORLD_END), o gato sai de vez pela direita — não depende mais
   // de continuar rolando um trecho extra depois disso (0.85 a 1.0), que
-  // na prática quase nunca era percorrido, deixando o gato "preso"
+  // na prática quase nunca era percorrido, deixando o gato "preso".
+  // A distância precisa ser relativa à largura real da tela: um valor fixo
+  // pequeno demais deixa o gato visível parado à direita em telas largas.
   const WORLD_END = 0.85
-  const catExit = progress >= WORLD_END ? 1400 : 0
+  const catExit =
+    progress >= WORLD_END && viewportWidth > 0
+      ? viewportWidth - CAT_ANCHOR + CAT_WIDTH + EXIT_MARGIN
+      : 0
 
   return (
     <section
