@@ -1,10 +1,6 @@
 import { render, screen, act } from '@testing-library/react'
 import { ProjectsSection } from './projects-section'
 
-jest.mock('@/hooks/useCatWalk', () => ({
-  useCatWalk: () => ({ sectionRef: { current: document.createElement('section') } }),
-}))
-
 jest.mock('@/hooks/useMouseParallax', () => ({
   useMouseParallax: () => ({ containerRef: { current: null }, offset: { x: 0, y: 0 } }),
 }))

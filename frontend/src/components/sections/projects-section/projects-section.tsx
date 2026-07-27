@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
-import { useCatWalk } from '@/hooks/useCatWalk'
 import { useMouseParallax } from '@/hooks/useMouseParallax'
 import { SpaceBackground } from './space-background'
 import { BuildingsSkyline } from './buildings-skyline'
@@ -15,9 +14,10 @@ import { ScrollTrigger } from '@/lib/gsap'
 import styles from './projects-section.module.css'
 
 export function ProjectsSection() {
-  // Usa o useCatWalk só pelo sectionRef (gatilho do pin + do teclado) —
-  // o progresso de verdade agora vem suavizado do ScrollTrigger abaixo
-  const { sectionRef } = useCatWalk()
+  // Só precisamos de uma ref pra seção — o progresso de verdade vem
+  // suavizado do ScrollTrigger abaixo (useCatWalk foi removido por rodar
+  // um listener de scroll à toa, sem seus valores calculados serem usados)
+  const sectionRef = useRef<HTMLElement | null>(null)
   const { containerRef, offset } = useMouseParallax()
   const { ref: fadeRef, isVisible } = useFadeIn<HTMLElement>(0.01)
   const stickyRef = useRef<HTMLDivElement>(null)
