@@ -33,6 +33,14 @@ const WORLD_END = 0.85
 // ficar "ativo" (calibrado pela largura real do prédio, ±90px do centro)
 const ACTIVE_THRESHOLD = 100
 
+// Largura fixa em que cada prédio é renderizado (precisa bater com
+// .house { width: 180px } no CSS) — usada pra calcular a altura visual
+// real de cada foto, já que elas têm proporções diferentes entre si
+const HOUSE_RENDER_WIDTH = 180
+
+// Margem de sobra entre o topo do prédio e o prompt de interação
+const PROMPT_MARGIN_ABOVE = 30
+
 // Os 3 prédios em foto, alternados por índice (1, 2, 3, 1, 2, 3...) —
 // cada um com suas dimensões reais (proporções diferentes entre si), pro
 // Next.js calcular a proporção certa e não "flutuarem" fora do chão
@@ -114,7 +122,10 @@ export function WorldStrip({ progress, onInteract }: WorldStripProps) {
             {isActive && (
               <button
                 className={styles.prompt}
-                style={{ left: `${stopX(i) + 95}px` }}
+                style={{
+                  left: `${stopX(i)}px`,
+                  bottom: `${158 + (HOUSE_RENDER_WIDTH * building.height) / building.width + PROMPT_MARGIN_ABOVE}px`,
+                }}
                 onClick={() => onInteract(exp)}
               >
                 press ENTER or tap to open
