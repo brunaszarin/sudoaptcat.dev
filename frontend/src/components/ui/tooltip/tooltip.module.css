@@ -31,11 +31,11 @@
 }
 
 .border { position: absolute; inset: 0; background: var(--color-neon); z-index: 0; }
-.fill { position: absolute; inset: 2px; background: #0a0a0a; z-index: 1; }
+.fill { position: absolute; inset: 2px; background: var(--color-neon); z-index: 1; }
 .label {
   position: relative;
   z-index: 2;
-  color: var(--color-neon);
+  color: #0a0a0a;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
@@ -137,17 +137,5 @@
 
 .wrap:hover .bottom.alignRight,
 .wrap:hover .top.alignRight {
-  transform: translateY(0);
-}
-
-.arrow_bottom.alignRight,
-.arrow_top.alignRight {
-  left: auto;
-  right: 12px;
-  transform: translateY(-4px);
-}
-
-.wrap:hover .arrow_bottom.alignRight,
-.wrap:hover .arrow_top.alignRight {
   transform: translateY(0);
 }
