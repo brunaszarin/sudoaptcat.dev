@@ -1,4 +1,12 @@
-.skyline {
+.skylineWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.layer {
   position: absolute;
   /* Margem generosa e fixa (não em %) — o deslocamento do paralaxe é em
      pixels fixos (baseado na distância entre empresas), então em telas
@@ -7,12 +15,27 @@
   left: -200vw;
   bottom: 158px;
   width: 500vw;
-  height: 300px;
-  background-image: url('/assets/city.svg');
   background-repeat: repeat-x;
   background-position: left bottom;
+}
+
+/* Camada mais distante — mais escura, mais sutil, silhueta simples */
+.far {
+  height: 320px;
+  background-size: auto 320px;
+  opacity: 0.55;
+}
+
+/* Camada do meio — cor intermediária, com janelas acesas */
+.mid {
+  height: 300px;
   background-size: auto 300px;
-  z-index: 0;
-  opacity: 0.7;
-  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Camada mais próxima — mais clara, mais presente */
+.near {
+  height: 260px;
+  background-size: auto 260px;
+  opacity: 0.75;
 }

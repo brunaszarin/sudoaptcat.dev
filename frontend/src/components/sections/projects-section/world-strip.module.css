@@ -25,13 +25,28 @@
   background: #3b6d11;
 }
 
-/* Casinhas */
+/* Prédios (fotos PNG) */
 .house {
   position: absolute;
   bottom: 158px;
   width: 180px;
   height: auto;
+}
+
+.houseImage {
+  width: 100%;
+  height: auto;
   image-rendering: pixelated;
+}
+
+/* Postes de luz decorativos, entre cada par de prédios */
+.streetlamp {
+  position: absolute;
+  bottom: 158px;
+  width: 40px;
+  height: auto;
+  image-rendering: pixelated;
+  z-index: 0;
 }
 
 /* Cards — escondidos por padrão, aparecem quando ativos */
@@ -47,4 +62,128 @@
 .cardActive {
   opacity: 1;
   transform: translateY(0);
+}
+/* Brilho tremulante na luminária do poste — posicionado perto do topo,
+   onde fica a cabeça de luz do poste (imagem recortada, ~8% do topo) */
+.lampGlow {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 244, 179, 0.9) 0%,
+    rgba(170, 255, 0, 0.5) 40%,
+    transparent 75%
+  );
+  filter: blur(4px);
+  animation: lamp-flicker 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lamp-flicker {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  8% { opacity: 0.6; }
+  14% { opacity: 1; }
+  40% { opacity: 0.85; transform: translateX(-50%) scale(0.94); }
+  62% { opacity: 1; }
+  78% { opacity: 0.7; }
+}
+
+/* Vagalumes — pontinhos de pixel voando perto da luz, cada um com seu
+   próprio caminho e ritmo de piscada, pra não ficarem sincronizados */
+.firefly {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  background: #ccff66;
+  box-shadow: 0 0 3px rgba(204, 255, 102, 0.8);
+  pointer-events: none;
+}
+
+.fireflyA {
+  animation: firefly-orbit-a 4.2s ease-in-out infinite;
+}
+
+.fireflyB {
+  animation: firefly-orbit-b 5.1s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.fireflyC {
+  animation: firefly-orbit-c 3.7s ease-in-out infinite;
+  animation-delay: 1.4s;
+}
+
+@keyframes firefly-orbit-a {
+  0%   { transform: translate(-14px, 12px); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translate(28px, -22px); opacity: 0.8; }
+  80%  { opacity: 1; }
+  100% { transform: translate(-14px, 12px); opacity: 0; }
+}
+
+@keyframes firefly-orbit-b {
+  0%   { transform: translate(24px, 8px); opacity: 0; }
+  25%  { opacity: 1; }
+  55%  { transform: translate(-30px, -16px); opacity: 0.7; }
+  85%  { opacity: 1; }
+  100% { transform: translate(24px, 8px); opacity: 0; }
+}
+
+@keyframes firefly-orbit-c {
+  0%   { transform: translate(-22px, -14px); opacity: 0; }
+  30%  { opacity: 1; }
+  60%  { transform: translate(18px, 24px); opacity: 0.75; }
+  90%  { opacity: 1; }
+  100% { transform: translate(-22px, -14px); opacity: 0; }
+}
+
+/* Prompt de interação — aparece flutuando acima do prédio ativo */
+.prompt {
+  position: absolute;
+  bottom: 220px;
+  appearance: none;
+  background: #ff0099;
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 3;
+  animation: prompt-float 1.6s ease-in-out infinite;
+  clip-path: polygon(
+    6px 0, calc(100% - 6px) 0, calc(100% - 3px) 0, calc(100% - 3px) 3px,
+    100% 3px, 100% 6px, 100% calc(100% - 6px), 100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, calc(100% - 6px) 100%,
+    6px 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px), 0 calc(100% - 6px),
+    0 6px, 0 3px, 3px 3px, 3px 0
+  );
+}
+
+@keyframes prompt-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Prédio como botão — remove o estilo padrão de botão, e destaca
+   levemente quando ativo (o gato está na frente dele) */
+.house {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: default;
+  transition: filter 0.3s ease;
+}
+
+.houseActive {
+  cursor: pointer;
 }

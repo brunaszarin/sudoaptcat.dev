@@ -80,20 +80,3 @@
 .meteor1 { top: 5%; left: 15%; animation-duration: 4.5s; animation-delay: 0s; }
 .meteor2 { top: 2%; left: 45%; animation-duration: 5.5s; animation-delay: 3s; }
 .meteor3 { top: 10%; left: 68%; animation-duration: 5s; animation-delay: 5.5s; }
-
-/* Planetas */
-.planet1 {
-  position: absolute;
-  top: 12%;
-  left: 6%;
-  width: 52px;
-  height: 52px;
-}
-
-.saturn {
-  position: absolute;
-  top: 15%;
-  right: 6%;
-  width: 100px;
-  height: 64px;
-}
