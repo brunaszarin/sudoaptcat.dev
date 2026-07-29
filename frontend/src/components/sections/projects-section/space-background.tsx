@@ -31,7 +31,6 @@ export function SpaceBackground({ mouseOffset }: SpaceBackgroundProps) {
   // Parallax de mouse — camadas em profundidades diferentes
   const farShift = { x: mouseOffset.x * 4, y: mouseOffset.y * 2 }
   const midShift = { x: mouseOffset.x * 8, y: mouseOffset.y * 4 }
-  const nearShift = { x: mouseOffset.x * 14, y: mouseOffset.y * 7 }
 
   return (
     <div className={styles.space} aria-hidden="true">
@@ -80,62 +79,6 @@ export function SpaceBackground({ mouseOffset }: SpaceBackgroundProps) {
           <div className={styles.tail} />
           <div className={styles.dot} />
         </div>
-      </div>
-
-      {/* Planetas (camada próxima) */}
-      <div
-        className={styles.layer}
-        style={{ transform: `translate(${nearShift.x}px, ${nearShift.y}px)` }}
-      >
-        {/* Planeta com crateras */}
-        <svg className={styles.planet1} viewBox="0 0 16 16" shapeRendering="crispEdges">
-          <rect x="5" y="1" width="6" height="1" fill="#4d7200" />
-          <rect x="3" y="2" width="10" height="1" fill="#66aa00" />
-          <rect x="2" y="3" width="12" height="1" fill="#66aa00" />
-          <rect x="1" y="4" width="14" height="8" fill="#7bc400" />
-          <rect x="2" y="12" width="12" height="1" fill="#66aa00" />
-          <rect x="3" y="13" width="10" height="1" fill="#4d7200" />
-          <rect x="5" y="14" width="6" height="1" fill="#4d7200" />
-          <rect x="4" y="5" width="3" height="2" fill="#88cc00" />
-          <rect x="9" y="7" width="3" height="2" fill="#4d7200" />
-          <rect x="6" y="9" width="2" height="2" fill="#4d7200" />
-          <rect x="10" y="4" width="2" height="1" fill="#88cc00" />
-        </svg>
-
-     {/* Saturno com anéis */}
-        <svg className={styles.saturn} viewBox="0 0 24 20" shapeRendering="crispEdges">
-          {/* Corpo do planeta */}
-          <rect x="9" y="2" width="6" height="1" fill="#88cc00" />
-          <rect x="8" y="3" width="8" height="1" fill="#aaff00" />
-          <rect x="7" y="4" width="10" height="1" fill="#aaff00" />
-          <rect x="7" y="5" width="10" height="1" fill="#aaff00" />
-          <rect x="6" y="6" width="12" height="1" fill="#7bc400" />
-          <rect x="6" y="7" width="12" height="1" fill="#7bc400" />
-          <rect x="6" y="8" width="12" height="1" fill="#66aa00" />
-          <rect x="7" y="9" width="10" height="1" fill="#66aa00" />
-          <rect x="7" y="10" width="10" height="1" fill="#4d7200" />
-          <rect x="8" y="11" width="8" height="1" fill="#4d7200" />
-          <rect x="9" y="12" width="6" height="1" fill="#3b6d11" />
-          {/* Detalhes claros */}
-          <rect x="9" y="3" width="2" height="1" fill="#ccff66" />
-          <rect x="12" y="4" width="2" height="1" fill="#ccff66" />
-          <rect x="8" y="5" width="1" height="1" fill="#88cc00" />
-          <rect x="13" y="6" width="2" height="1" fill="#88cc00" />
-          <rect x="9" y="7" width="1" height="1" fill="#4d7200" />
-          {/* Anel de trás */}
-          <rect x="2" y="7" width="4" height="1" fill="#2f5d00" />
-          <rect x="1" y="8" width="3" height="1" fill="#3b6d11" />
-          <rect x="18" y="7" width="4" height="1" fill="#2f5d00" />
-          <rect x="20" y="8" width="3" height="1" fill="#3b6d11" />
-          {/* Anel da frente */}
-          <rect x="3" y="9" width="6" height="1" fill="#aaff00" />
-          <rect x="1" y="8" width="2" height="1" fill="#88cc00" />
-          <rect x="15" y="9" width="6" height="1" fill="#aaff00" />
-          <rect x="21" y="8" width="2" height="1" fill="#88cc00" />
-          <rect x="9" y="9" width="6" height="1" fill="#66aa00" />
-          <rect x="4" y="10" width="4" height="1" fill="#4d7200" />
-          <rect x="16" y="10" width="4" height="1" fill="#4d7200" />
-        </svg>
       </div>
     </div>
   )

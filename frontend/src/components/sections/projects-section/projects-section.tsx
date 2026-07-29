@@ -5,18 +5,20 @@ import { useGSAP } from '@gsap/react'
 import { useMouseParallax } from '@/hooks/useMouseParallax'
 import { SpaceBackground } from './space-background'
 import { BuildingsSkyline } from './buildings-skyline'
-import { WorldStrip, CAT_ANCHOR } from './world-strip'
+import { WorldStrip, CAT_ANCHOR, getWorldShift, getActiveIndex } from './world-strip'
 import { WalkingCat } from './walking-cat'
+import { CompanyModal } from './company-modal'
 import { useFadeIn } from '@/hooks/useFadeIn'
 import { ControlsHint } from './controls-hint'
 import { useKeyboardScroll } from '@/hooks/useKeyboardScroll'
 import { ScrollTrigger } from '@/lib/gsap'
+import { EXPERIENCES, type Experience } from '@/data/experiences'
 import styles from './projects-section.module.css'
 
+// Duração da animação do gato "entrando" no prédio antes do modal abrir
+const ENTER_ANIMATION_MS = 850
+
 export function ProjectsSection() {
-  // Só precisamos de uma ref pra seção — o progresso de verdade vem
-  // suavizado do ScrollTrigger abaixo (useCatWalk foi removido por rodar
-  // um listener de scroll à toa, sem seus valores calculados serem usados)
   const sectionRef = useRef<HTMLElement | null>(null)
   const { containerRef, offset } = useMouseParallax()
   const { ref: fadeRef, isVisible } = useFadeIn<HTMLElement>(0.01)
@@ -29,9 +31,11 @@ export function ProjectsSection() {
   const [viewportWidth, setViewportWidth] = useState(0)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Largura da viewport, pra calcular quanto o gato precisa andar pra sair
-  // de vez da tela (não dá pra usar um valor fixo em px — em telas largas
-  // um número fixo pequeno demais deixa o gato "parado" visível à direita)
+  // Estado da interação: qual empresa está no modal (null = fechado), e se
+  // o gato está no meio da animação de "entrar" (encolhe antes do modal abrir)
+  const [activeExperience, setActiveExperience] = useState<Experience | null>(null)
+  const [isEntering, setIsEntering] = useState(false)
+
   useEffect(() => {
     function update() {
       setViewportWidth(window.innerWidth)
@@ -41,23 +45,16 @@ export function ProjectsSection() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Combina os refs de scroll do gato + fade na seção externa (500vh)
   const setSectionRefs = (node: HTMLElement | null) => {
     sectionRef.current = node
     fadeRef.current = node
   }
 
-  // Combina os refs de paralaxe do mouse + o alvo do pin na div interna
   const setStickyRefs = (node: HTMLDivElement | null) => {
     containerRef.current = node
     stickyRef.current = node
   }
 
-  // Trava a div .sticky na tela enquanto a <section> externa (500vh) rola —
-  // usa ScrollTrigger.pin() em vez de position:sticky (compatível com o
-  // ScrollSmoother). O mesmo trigger também entrega o progresso via scrub,
-  // suavizado (com um pequeno atraso elástico), em vez do valor bruto do
-  // scroll — é isso que deixa o andar do gato suave.
   useGSAP(() => {
     if (!sectionRef.current || !stickyRef.current) return
 
@@ -74,9 +71,6 @@ export function ProjectsSection() {
         if (self.direction === -1) setFacingLeft(true)
         else if (self.direction === 1) setFacingLeft(false)
 
-        // "Anda" só enquanto o scroll está de fato em movimento — desliga
-        // sozinho 120ms depois do último disparo, mesma lógica que o
-        // useCatWalk original tinha antes da migração pro scrub
         setIsScrolling(true)
         if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
         scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 120)
@@ -89,27 +83,53 @@ export function ProjectsSection() {
     }
   }, [])
 
-  // O fade-in da seção (fade-section/is-visible) aplica um translateY até
-  // a seção aparecer — se o ScrollTrigger calcular a posição do pin antes
-  // desse transform "assentar", ele guarda um valor levemente errado.
-  // Recalcula assim que o fade termina (mesma duração do CSS: 0.8s).
   useEffect(() => {
     if (!isVisible) return
     const id = setTimeout(() => ScrollTrigger.refresh(), 850)
     return () => clearTimeout(id)
   }, [isVisible])
 
-  // Largura do sprite do gato (precisa bater com walking-cat.module.css .cat)
-  const CAT_WIDTH = 80
-  // Margem de segurança extra, mesmo espírito do EXIT_MARGIN em world-strip.tsx
-  const EXIT_MARGIN = 60
+  // Dispara ao clicar/tocar no prédio ou apertar Enter — o gato "entra"
+  // (encolhe/some por um instante) e só depois o modal abre
+  function handleInteract(experience: Experience) {
+    if (isEntering || activeExperience) return
+    setIsEntering(true)
+    setTimeout(() => {
+      setActiveExperience(experience)
+    }, ENTER_ANIMATION_MS)
+  }
 
-  // Assim que o mundo termina de deslizar (mesmo corte que o WorldStrip
-  // usa pra WORLD_END), o gato sai de vez pela direita — não depende mais
-  // de continuar rolando um trecho extra depois disso (0.85 a 1.0), que
-  // na prática quase nunca era percorrido, deixando o gato "preso".
-  // A distância precisa ser relativa à largura real da tela: um valor fixo
-  // pequeno demais deixa o gato visível parado à direita em telas largas.
+  // O gato só volta a aparecer quando o modal fecha de vez — fica
+  // "escondido dentro do prédio" durante toda a leitura do card, não só
+  // durante a animação inicial de entrar
+  function handleCloseModal() {
+    setActiveExperience(null)
+    setIsEntering(false)
+  }
+
+  // Enter abre a empresa ativa (mesmo gatilho que clicar no prompt/prédio)
+  useEffect(() => {
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key !== 'Enter') return
+      const section = sectionRef.current
+      if (!section) return
+      const rect = section.getBoundingClientRect()
+      const isSectionActive = rect.top <= 0 && rect.bottom >= window.innerHeight
+      if (!isSectionActive) return
+
+      const shift = getWorldShift(progress)
+      const index = getActiveIndex(shift)
+      if (index >= 0) {
+        handleInteract(EXPERIENCES[index])
+      }
+    }
+
+    window.addEventListener('keydown', handleKeydown)
+    return () => window.removeEventListener('keydown', handleKeydown)
+  }, [progress, isEntering, activeExperience])
+
+  const CAT_WIDTH = 80
+  const EXIT_MARGIN = 60
   const WORLD_END = 0.85
   const catExit =
     progress >= WORLD_END && viewportWidth > 0
@@ -132,16 +152,18 @@ export function ProjectsSection() {
 
         <div className={styles.stage}>
           <BuildingsSkyline progress={progress} />
-          {/* O mundo que desliza */}
-          <WorldStrip progress={progress} />
+          <WorldStrip progress={progress} onInteract={handleInteract} />
           <ControlsHint />
-          {/* O gato fixo à esquerda */}
+
+          {/* O gato fixo à esquerda — encolhe/some brevemente ao "entrar"
+              num prédio, antes do modal abrir */}
           <div
             className={styles.catAnchor}
             style={{
               left: `${CAT_ANCHOR}px`,
-              transform: `translateX(${catExit}px)`,
-              transition: 'transform 0.4s ease-out',
+              transform: `translateX(${catExit}px) scale(${isEntering ? 0.5 : 1})`,
+              opacity: isEntering ? 0 : 1,
+              transition: 'transform 0.4s ease-out, opacity 0.35s ease, scale 0.35s ease',
             }}
           >
             <WalkingCat
@@ -151,6 +173,8 @@ export function ProjectsSection() {
           </div>
         </div>
       </div>
+
+      <CompanyModal experience={activeExperience} onClose={handleCloseModal} />
     </section>
   )
 }
