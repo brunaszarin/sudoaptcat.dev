@@ -6,7 +6,7 @@
   position: relative;
   border: none;
   padding: 0;
-  cursor: inherit;
+  cursor: pointer;
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 600;
