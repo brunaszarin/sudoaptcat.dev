@@ -54,7 +54,7 @@ export function CompanyModal({ experience, onClose }: CompanyModalProps) {
             <div className={styles.techs}>
               {experience.technologies.map((tech) => (
                 <span key={tech} className={styles.tech}>
-                  {tech}
+                  <span className={styles.techInner}>{tech}</span>
                 </span>
               ))}
             </div>

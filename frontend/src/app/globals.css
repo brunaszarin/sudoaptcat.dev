@@ -38,7 +38,7 @@ html {
 }
 
 a, button, [role="button"] {
-  cursor: inherit;
+  cursor: pointer;
 }
 
 /* ——— Scrollbar no tema ——— */

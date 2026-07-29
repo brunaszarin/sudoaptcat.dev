@@ -3,6 +3,7 @@ import { Pixelify_Sans, Bricolage_Grotesque } from 'next/font/google'
 import { Providers } from './providers'
 import { Navbar } from '@/components/layout/navbar'
 import { SmoothScrollProvider } from '@/components/smooth-scroll/smooth-scroll-provider'
+import '@hackernoon/pixel-icon-library/fonts/iconfont.css'
 import './globals.css'
 
 const pixelFont = Pixelify_Sans({

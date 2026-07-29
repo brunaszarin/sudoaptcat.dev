@@ -147,7 +147,10 @@
 /* Prompt de interação — aparece flutuando acima do prédio ativo */
 .prompt {
   position: absolute;
-  bottom: 220px;
+  /* Acima do mais alto dos 3 prédios (~378px de altura renderizada),
+     com margem de sobra pra nunca ficar colado no topo dele */
+  bottom: 400px;
+  transform: translateX(-50%);
   appearance: none;
   background: #ff0099;
   color: #fff;
@@ -169,8 +172,8 @@
 }
 
 @keyframes prompt-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
 }
 
 /* Prédio como botão — remove o estilo padrão de botão, e destaca

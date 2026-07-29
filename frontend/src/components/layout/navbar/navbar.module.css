@@ -48,7 +48,7 @@
   appearance: none;
   background: none;
   border: none;
-  cursor: inherit;
+  cursor: pointer;
   color: #888;
   font-family: var(--font-sans);
   font-size: 13px;
@@ -75,7 +75,8 @@
   align-items: center;
   justify-content: center;
   color: var(--color-neon);
-  cursor: inherit;
+  font-size: 22px;
+  cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.2s, transform 0.2s;
 }

@@ -131,7 +131,7 @@
   display: block;
   padding: 8px 6px;
   border-bottom: 1px solid #1a2900;
-  cursor: inherit;
+  cursor: pointer;
   transition: background 0.15s ease;
 }
 
