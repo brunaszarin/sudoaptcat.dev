@@ -52,7 +52,7 @@
 .terminalBorder {
   position: absolute;
   inset: 0;
-  background: #2f5d00;
+  background: #4d7200;
   clip-path: polygon(
     10px 0, calc(100% - 10px) 0, calc(100% - 5px) 0, calc(100% - 5px) 5px,
     100% 5px, 100% 10px, 100% calc(100% - 10px), 100% calc(100% - 5px),
@@ -64,7 +64,7 @@
 
 .terminal {
   position: relative;
-  margin: 2px;
+  margin: 4px;
   background: #0a1400;
   clip-path: polygon(
     8px 0, calc(100% - 8px) 0, calc(100% - 4px) 0, calc(100% - 4px) 4px,
