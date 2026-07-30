@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { EXPERIENCES, type Experience } from '@/data/experiences'
 import styles from './world-strip.module.css'
@@ -33,10 +34,25 @@ const WORLD_END = 0.85
 // ficar "ativo" (calibrado pela largura real do prédio, ±90px do centro)
 const ACTIVE_THRESHOLD = 100
 
-// Largura fixa em que cada prédio é renderizado (precisa bater com
-// .house { width: 180px } no CSS) — usada pra calcular a altura visual
-// real de cada foto, já que elas têm proporções diferentes entre si
-const HOUSE_RENDER_WIDTH = 180
+// Largura em que cada prédio é renderizado — menor no mobile, pra caber
+// na tela sem cortar o topo do prédio nem o prompt de interação
+const HOUSE_WIDTH_DESKTOP = 180
+const HOUSE_WIDTH_MOBILE = 110
+
+function useHouseWidth() {
+  const [width, setWidth] = useState(HOUSE_WIDTH_DESKTOP)
+
+  useEffect(() => {
+    function update() {
+      setWidth(window.innerWidth <= 768 ? HOUSE_WIDTH_MOBILE : HOUSE_WIDTH_DESKTOP)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  return width
+}
 
 // Margem de sobra entre o topo do prédio e o prompt de interação
 const PROMPT_MARGIN_ABOVE = 30
@@ -78,6 +94,7 @@ interface WorldStripProps {
 export function WorldStrip({ progress, onInteract }: WorldStripProps) {
   const shift = getWorldShift(progress)
   const activeIndex = getActiveIndex(shift)
+  const houseWidth = useHouseWidth()
 
   return (
     <div
@@ -124,7 +141,7 @@ export function WorldStrip({ progress, onInteract }: WorldStripProps) {
                 className={styles.prompt}
                 style={{
                   left: `${stopX(i)}px`,
-                  bottom: `${158 + (HOUSE_RENDER_WIDTH * building.height) / building.width + PROMPT_MARGIN_ABOVE}px`,
+                  bottom: `${158 + (houseWidth * building.height) / building.width + PROMPT_MARGIN_ABOVE}px`,
                 }}
                 onClick={() => onInteract(exp)}
               >
@@ -136,7 +153,7 @@ export function WorldStrip({ progress, onInteract }: WorldStripProps) {
                 um leve destaque quando está ativo */}
             <button
               className={`${styles.house} ${isActive ? styles.houseActive : ''}`}
-              style={{ left: `${stopX(i) - 90}px` }}
+              style={{ left: `${stopX(i) - houseWidth / 2}px`, width: `${houseWidth}px` }}
               onClick={() => isActive && onInteract(exp)}
               tabIndex={-1}
               aria-label={isActive ? `open ${exp.company}` : undefined}

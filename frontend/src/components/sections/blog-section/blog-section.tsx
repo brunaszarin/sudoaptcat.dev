@@ -13,8 +13,25 @@ import { ScrollSmoother, ScrollTrigger } from '@/lib/gsap'
 import styles from './blog-section.module.css'
 
 // Quantos posts aparecem por "página" dentro do terminal — evita a tela
-// ficar gigante conforme o número de posts publicados cresce
-const PAGE_SIZE = 3
+// ficar gigante conforme o número de posts publicados cresce. Menor no
+// mobile, onde cada post ocupa proporcionalmente mais espaço vertical.
+const PAGE_SIZE_DESKTOP = 2
+const PAGE_SIZE_MOBILE = 1
+
+function usePageSize() {
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DESKTOP)
+
+  useEffect(() => {
+    function update() {
+      setPageSize(window.innerWidth <= 768 ? PAGE_SIZE_MOBILE : PAGE_SIZE_DESKTOP)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  return pageSize
+}
 
 export function BlogSection() {
   const { data: posts } = usePosts()
@@ -29,6 +46,7 @@ export function BlogSection() {
   const [powerLevel, setPowerLevel] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [currentPage, setCurrentPage] = useState(0)
+  const PAGE_SIZE = usePageSize()
   // Guarda o tamanho da página atual numa ref — o onUpdate do pin lê
   // sempre o valor mais recente daqui, sem precisar que o efeito seja
   // recriado (evita o bug de perder o pin quando os posts carregam)
@@ -41,6 +59,15 @@ export function BlogSection() {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
   const totalPages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE))
+
+  // Se o PAGE_SIZE muda (ex: girar o celular, redimensionar a janela) e a
+  // página atual passa a não existir mais, volta pra última válida
+  useEffect(() => {
+    if (currentPage > totalPages - 1) {
+      setCurrentPage(totalPages - 1)
+    }
+  }, [totalPages, currentPage])
+
   const pagePosts = allPosts.slice(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE)
 
   function goToPrevPage() {
