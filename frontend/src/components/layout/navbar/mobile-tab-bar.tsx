@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { ScrollSmoother } from '@/lib/gsap'
+import { navigateToSection } from '@/lib/navigate-to-section'
 import styles from './mobile-tab-bar.module.css'
 
 const TABS = [
@@ -67,13 +67,7 @@ export function MobileTabBar() {
       return
     }
     if (isHome) {
-      const smoother = ScrollSmoother.get()
-      const el = document.getElementById(id)
-      if (smoother && el) {
-        smoother.scrollTo(el, true)
-      } else {
-        el?.scrollIntoView({ behavior: 'smooth' })
-      }
+      navigateToSection(id)
     } else {
       router.push(`/#${id}`)
     }

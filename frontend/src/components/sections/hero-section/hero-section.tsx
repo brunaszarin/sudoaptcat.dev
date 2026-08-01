@@ -7,6 +7,7 @@ import { ParallaxBackground } from '../parallax-background'
 import { FloatingElements } from '../floating-elements'
 import { PixelButton } from '@/components/ui/pixel-button'
 import { useFadeIn } from '@/hooks/useFadeIn'
+import { navigateToSection } from '@/lib/navigate-to-section'
 import styles from './hero-section.module.css'
 
 export function HeroSection() {
@@ -17,6 +18,8 @@ export function HeroSection() {
     containerRef.current = node as HTMLDivElement
     fadeRef.current = node
   }
+
+
 
   return (
     <section
@@ -77,17 +80,15 @@ export function HeroSection() {
             I build things for the web (and pet cats)
           </p>
           <div className={styles.buttons}>
-            <PixelButton 
-            variant="green"
-            onClick={()=>{ 
-              document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth'})
-            }}
-            >my work</PixelButton>
+            <PixelButton
+              variant="green"
+              onClick={() => navigateToSection('projects')}
+            >
+              my work
+            </PixelButton>
             <PixelButton
               variant="ghost"
-              onClick={() => {
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-              }}
+              onClick={() => navigateToSection('about')}
             >
               about me
             </PixelButton>
