@@ -9,7 +9,8 @@ import { DesktopIcons } from './desktop-icons'
 import { Terminal } from './terminal'
 import { SystemDialog } from './system-dialog'
 import { Taskbar } from './taskbar'
-import { ScrollSmoother, ScrollTrigger } from '@/lib/gsap'
+import { ScrollTrigger } from '@/lib/gsap'
+import { navigateToSection } from '@/lib/navigate-to-section'
 import styles from './blog-section.module.css'
 
 // Quantos posts aparecem por "página" dentro do terminal — evita a tela
@@ -151,13 +152,7 @@ export function BlogSection() {
       setShowTrashError(true)
       return
     }
-    const smoother = ScrollSmoother.get()
-    const el = document.getElementById(id)
-    if (smoother && el) {
-      smoother.scrollTo(el, true)
-    } else {
-      el?.scrollIntoView({ behavior: 'smooth' })
-    }
+    navigateToSection(id)
   }
 
   useEffect(() => {
