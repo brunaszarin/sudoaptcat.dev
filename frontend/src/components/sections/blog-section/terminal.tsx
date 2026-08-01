@@ -78,7 +78,7 @@ export function Terminal({
                 disabled={currentPage === 0}
                 aria-label="previous page"
               >
-                ‹
+                <i className="hn hn-arrow-circle-left-solid" />
               </button>
               <span className={styles.pageLabel}>
                 page {currentPage + 1}/{totalPages}
@@ -89,7 +89,7 @@ export function Terminal({
                 disabled={currentPage === totalPages - 1}
                 aria-label="next page"
               >
-                ›
+                <i className="hn hn-arrow-circle-right-solid" />
               </button>
             </div>
           )}
