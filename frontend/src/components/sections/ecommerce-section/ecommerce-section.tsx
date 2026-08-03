@@ -11,6 +11,11 @@ import styles from './ecommerce-section.module.css'
 // especialização em Shopify, com seu próprio texto e produto caindo
 const CHAPTERS = [
   {
+    label: 'expert in ecommerce',
+    heading: 'shopify development',
+    desc: "10+ years building fast, conversion-focused Shopify storefronts for brands across different industries.",
+  },
+  {
     label: 'theme development',
     heading: "Liquid, at the core of every store I build",
     desc: "Over 10 years working with Shopify's templating language — building fast, maintainable themes from scratch or customizing existing ones to fit exactly what a brand needs.",
@@ -54,6 +59,7 @@ const CHAPTERS = [
 
 // Produtos que caem dentro da sacola — um por capítulo, na mesma ordem
 const PRODUCTS = [
+  { src: '/assets/shoe.png', width: 203, height: 158, name: 'Shopify' },
   { src: '/assets/lipstick.png', width: 62, height: 182, name: 'Liquid' },
   { src: '/assets/dress.png', width: 157, height: 196, name: 'Custom Themes' },
   { src: '/assets/shoe.png', width: 203, height: 158, name: 'Checkout Ext.' },
@@ -112,11 +118,6 @@ export function EcommerceSection() {
     setBagVisible(progress > BAG_REVEAL_THRESHOLD)
   }, [progress])
 
-  // O produto só começa a cair depois que a sacola já apareceu — antes
-  // disso, -1 significa "nenhum produto ativo ainda" (o texto já pode
-  // estar no capítulo 0, mas o item correspondente não nasce pré-caído)
-  const activeItemIndex = progress > BAG_REVEAL_THRESHOLD ? currentStep : -1
-
   return (
     <section
       id="ecommerce"
@@ -143,11 +144,6 @@ export function EcommerceSection() {
           <span className={`${styles.sparkle} ${styles.sparkle4}`} />
           <span className={`${styles.sparkle} ${styles.sparkle5}`} />
           <span className={`${styles.sparkle} ${styles.sparkle6}`} />
-        </div>
-
-        <div className={`${styles.header} ${isVisible ? styles.visible : ''}`}>
-          <p className={styles.label}>expert in ecommerce</p>
-          <h2 className={styles.title}>shopify development</h2>
         </div>
 
         {/* Moedas flutuantes — independentes do scroll, decorativas.
@@ -198,8 +194,8 @@ export function EcommerceSection() {
               </div>
 
               {PRODUCTS.map((product, i) => {
-                const isCurrent = i === activeItemIndex
-                const hasSettled = i < activeItemIndex
+                const isCurrent = i === currentStep
+                const hasSettled = i < currentStep
                 const className = [
                   styles.fallingItem,
                   isCurrent ? styles.dropped : '',
