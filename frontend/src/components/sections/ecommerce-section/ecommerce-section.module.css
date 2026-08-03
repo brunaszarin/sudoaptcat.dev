@@ -1,0 +1,541 @@
+.ecommerce {
+  position: relative;
+  background: #000;
+}
+
+.sticky {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Brilhos ambiente no fundo — manchas radiais sutis, pulsando devagar,
+   atrás de tudo (moedas, sacola, texto) */
+.glowLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.glow1 { animation: glowDrift1 14s ease-in-out infinite; }
+.glow2 { animation: glowDrift2 17s ease-in-out infinite; }
+.glow3 { animation: glowDrift3 12s ease-in-out infinite; }
+
+.glow1 {
+  top: 5%;
+  left: 15%;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(170, 255, 0, 0.18), transparent 70%);
+}
+
+.glow2 {
+  bottom: 0%;
+  right: 10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(190, 249, 5, 0.15), transparent 70%);
+}
+
+.glow3 {
+  top: 40%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 0, 153, 0.1), transparent 70%);
+}
+
+@keyframes glowDrift1 {
+  0%, 100% { opacity: 0.6; transform: translate(0, 0) scale(1); }
+  33% { opacity: 1; transform: translate(60px, 40px) scale(1.15); }
+  66% { opacity: 0.8; transform: translate(-30px, 70px) scale(0.95); }
+}
+
+@keyframes glowDrift2 {
+  0%, 100% { opacity: 0.55; transform: translate(0, 0) scale(1); }
+  40% { opacity: 0.9; transform: translate(-70px, -50px) scale(1.1); }
+  70% { opacity: 0.7; transform: translate(40px, -30px) scale(0.9); }
+}
+
+@keyframes glowDrift3 {
+  0%, 100% { opacity: 0.5; transform: translate(0, 0) scale(1); }
+  50% { opacity: 0.9; transform: translate(50px, -60px) scale(1.2); }
+}
+
+/* Símbolos de código flutuando — mesmo espírito dos vagalumes dos
+   postes de luz, só com caracteres de código em vez de pontos */
+.codeSymbol {
+  position: absolute;
+  color: rgba(170, 255, 0, 0.35);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.symbol1 { top: 15%; left: 8%; font-size: 22px; animation: symbolFloat1 9s ease-in-out infinite; }
+.symbol2 { top: 65%; left: 6%; font-size: 18px; animation: symbolFloat2 11s ease-in-out infinite 1s; }
+.symbol3 { top: 20%; right: 12%; font-size: 26px; animation: symbolFloat3 8s ease-in-out infinite 2s; }
+.symbol4 { top: 70%; right: 8%; font-size: 20px; animation: symbolFloat1 10s ease-in-out infinite 3s; }
+.symbol5 { top: 45%; left: 4%; font-size: 16px; animation: symbolFloat2 7.5s ease-in-out infinite 0.5s; }
+.symbol6 { top: 50%; right: 5%; font-size: 24px; animation: symbolFloat3 9.5s ease-in-out infinite 1.5s; }
+
+@keyframes symbolFloat1 {
+  0%, 100% { transform: translateY(0) rotate(-4deg); opacity: 0.3; }
+  50% { transform: translateY(-24px) rotate(4deg); opacity: 0.6; }
+}
+@keyframes symbolFloat2 {
+  0%, 100% { transform: translateY(0) rotate(3deg); opacity: 0.25; }
+  50% { transform: translateY(20px) rotate(-3deg); opacity: 0.55; }
+}
+@keyframes symbolFloat3 {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.35; }
+  50% { transform: translateY(-16px) rotate(6deg); opacity: 0.65; }
+}
+
+/* Sparkles — pontinhos piscando, mesma técnica dos vagalumes */
+.sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #ccff66;
+  box-shadow: 0 0 4px rgba(204, 255, 102, 0.9);
+  pointer-events: none;
+}
+
+.sparkle1 { top: 25%; left: 20%; animation: sparkleTwinkle 3.2s ease-in-out infinite; }
+.sparkle2 { top: 78%; left: 15%; animation: sparkleTwinkle 2.6s ease-in-out infinite 0.6s; }
+.sparkle3 { top: 12%; right: 25%; animation: sparkleTwinkle 3.8s ease-in-out infinite 1.2s; }
+.sparkle4 { top: 60%; right: 20%; animation: sparkleTwinkle 2.9s ease-in-out infinite 0.3s; }
+.sparkle5 { top: 88%; right: 30%; animation: sparkleTwinkle 3.4s ease-in-out infinite 1.8s; }
+.sparkle6 { top: 35%; left: 45%; animation: sparkleTwinkle 3s ease-in-out infinite 0.9s; }
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.header {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 6%;
+  z-index: 4;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.header.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.label {
+  color: var(--color-neon);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+
+.title {
+  font-family: var(--font-pixel);
+  font-size: clamp(24px, 6vw, 48px);
+  font-weight: 600;
+  color: #f0f0f0;
+  line-height: 1.2;
+}
+
+.stage {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6%;
+  max-width: 1200px;
+  padding: 0 6%;
+  box-sizing: border-box;
+}
+
+/* ——— Moedas — independentes do scroll, flutuam e giram continuamente ——— */
+.coinsLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.coin {
+  position: absolute;
+  perspective: 400px;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.coin.visible {
+  opacity: 1;
+}
+
+.coinBig1.visible { transition-delay: 0.1s; }
+.coinBig2.visible { transition-delay: 0.25s; }
+.coinSmall1.visible { transition-delay: 0.4s; }
+.coinSmall2.visible { transition-delay: 0.5s; }
+.coinSmall3.visible { transition-delay: 0.15s; }
+.coinSmall4.visible { transition-delay: 0.35s; }
+
+.coinInner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.coinInner img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.coinBig1 {
+  top: 16%;
+  left: 12%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat1 6s ease-in-out infinite;
+}
+.coinBig1 .coinInner {
+  animation: coinSpin 3.4s linear infinite;
+}
+
+.coinBig2 {
+  bottom: 22%;
+  right: 8%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat2 6.6s ease-in-out infinite 1s;
+}
+.coinBig2 .coinInner {
+  animation: coinSpin 3.9s linear infinite reverse 0.4s;
+}
+
+.coinSmall1 {
+  top: 8%;
+  right: 28%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat3 3.6s ease-in-out infinite 0.3s;
+}
+.coinSmall1 .coinInner {
+  animation: coinSpin 2.1s linear infinite 0.2s;
+}
+
+.coinSmall2 {
+  bottom: 6%;
+  left: 22%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat1 4.1s ease-in-out infinite reverse 0.7s;
+}
+.coinSmall2 .coinInner {
+  animation: coinSpin 2.5s linear infinite 0.5s;
+}
+
+.coinSmall3 {
+  top: 48%;
+  left: 3%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat2 4.4s ease-in-out infinite 1.2s;
+}
+.coinSmall3 .coinInner {
+  animation: coinSpin 2.3s linear infinite reverse 0.1s;
+}
+
+.coinSmall4 {
+  top: 30%;
+  right: 5%;
+  width: 60px;
+  height: 60px;
+  animation: coinFloat3 3.9s ease-in-out infinite 0.9s;
+}
+.coinSmall4 .coinInner {
+  animation: coinSpin 2.7s linear infinite 0.6s;
+}
+
+@keyframes coinFloat1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+@keyframes coinFloat2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(14px); }
+}
+@keyframes coinFloat3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes coinSpin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* ——— Coluna esquerda: sacola ——— */
+.left {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.left.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bagWrap {
+  position: relative;
+  width: 320px;
+  height: 350px;
+  animation: bagFloat 4s ease-in-out infinite;
+}
+
+@keyframes bagFloat {
+  0%, 100% { transform: translateY(-36px) rotate(-1.5deg); }
+  50% { transform: translateY(-50px) rotate(1.5deg); }
+}
+
+.bagImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  image-rendering: pixelated;
+  filter: brightness(0.65) saturate(0.5);
+}
+
+/* Recorta tudo dentro (preenchimento + onda) pelo contorno real da
+   sacola — usa a própria imagem como máscara, senão a onda (um
+   retângulo) vaza pra fora do desenho nas partes mais estreitas */
+.bagFillWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  -webkit-mask-image: url('/assets/shopify-bag.png');
+  mask-image: url('/assets/shopify-bag.png');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.bagImgLit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  clip-path: inset(100% 0 0 0);
+  filter: drop-shadow(0 0 10px rgba(170, 255, 0, 0.4));
+}
+
+.waveOverlay {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 40px;
+  top: 100%;
+  transform: translateY(-80%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M0 20 C10 4 30 36 40 20 V40 H0 Z' fill='%23bef905'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 40px 40px;
+  animation: waveMove 2.2s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(170, 255, 0, 0.7));
+  pointer-events: none;
+}
+
+@keyframes waveMove {
+  from { background-position-x: 0; }
+  to { background-position-x: -40px; }
+}
+
+/* Itens de produto caindo dentro da sacola */
+.fallingItem {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: top 0.5s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.3s ease;
+}
+
+.fallingItem.dropped {
+  top: 140px;
+  opacity: 1;
+}
+
+.fallingItem.settled {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.itemIcon img {
+  width: 30px;
+  height: 30px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px rgba(170, 255, 0, 0.6));
+}
+
+.itemName {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: var(--color-neon);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+/* ——— Coluna direita: texto por capítulo ——— */
+.right {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+  z-index: 3;
+  min-height: 380px;
+  text-align: left;
+  /* Compensa o float da sacola (que fica deslocada pra cima pela
+     animação de flutuar), pra alinhar visualmente com o texto */
+  margin-top: 90px;
+}
+
+.chapter {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.chapter.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chapterLabel {
+  color: var(--color-neon);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+}
+
+.heading {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.heading .dot {
+  color: var(--color-neon);
+}
+
+.desc {
+  font-family: var(--font-sans);
+  color: #c0c0c0;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* ——— Responsivo: empilha as colunas, reduz tamanhos ——— */
+@media (max-width: 768px) {
+  .stage {
+    flex-direction: column;
+    justify-content: center;
+    padding: 90px 6% 20px;
+    gap: 24px;
+    overflow: hidden;
+  }
+
+  .header {
+    top: 4%;
+  }
+
+  .title {
+    font-size: clamp(20px, 7vw, 28px);
+  }
+
+  .right {
+    order: 1;
+    flex: none;
+    max-width: 100%;
+    min-height: 220px;
+  }
+
+  .left {
+    order: 2;
+    flex: none;
+  }
+
+  .bagWrap {
+    width: 200px;
+    height: 220px;
+  }
+
+  .heading {
+    font-size: 20px;
+  }
+
+  .desc {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .itemIcon img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .itemName {
+    font-size: 8px;
+  }
+
+  .coinBig1,
+  .coinBig2,
+  .coinSmall1,
+  .coinSmall2,
+  .coinSmall3,
+  .coinSmall4 {
+    width: 34px;
+    height: 34px;
+  }
+}
