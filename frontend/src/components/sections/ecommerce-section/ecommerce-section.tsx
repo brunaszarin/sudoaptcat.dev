@@ -130,13 +130,8 @@ export function EcommerceSection() {
           <div className={`${styles.glow} ${styles.glow1}`} />
           <div className={`${styles.glow} ${styles.glow2}`} />
           <div className={`${styles.glow} ${styles.glow3}`} />
-
-          <span className={`${styles.codeSymbol} ${styles.symbol1}`}>{'</>'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol2}`}>{'{ }'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol3}`}>$</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol4}`}>#</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol5}`}>{'</>'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol6}`}>{'{ }'}</span>
+          <div className={`${styles.glow} ${styles.glow4}`} />
+          <div className={`${styles.glow} ${styles.glow5}`} />
 
           <span className={`${styles.sparkle} ${styles.sparkle1}`} />
           <span className={`${styles.sparkle} ${styles.sparkle2}`} />
@@ -144,6 +139,10 @@ export function EcommerceSection() {
           <span className={`${styles.sparkle} ${styles.sparkle4}`} />
           <span className={`${styles.sparkle} ${styles.sparkle5}`} />
           <span className={`${styles.sparkle} ${styles.sparkle6}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle7}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle8}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle9}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle10}`} />
         </div>
 
         {/* Moedas flutuantes — independentes do scroll, decorativas.
@@ -211,7 +210,6 @@ export function EcommerceSection() {
                         height={product.height}
                       />
                     </div>
-                    <div className={styles.itemName}>{product.name}</div>
                   </div>
                 )
               })}
