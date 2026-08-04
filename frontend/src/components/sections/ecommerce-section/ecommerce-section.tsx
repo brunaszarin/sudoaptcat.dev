@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import Image from 'next/image'
 import { useFadeIn } from '@/hooks/useFadeIn'
@@ -10,6 +10,11 @@ import styles from './ecommerce-section.module.css'
 // Quantos "capítulos" a seção tem — cada um cobre um tema diferente da
 // especialização em Shopify, com seu próprio texto e produto caindo
 const CHAPTERS = [
+  {
+    label: 'expert in ecommerce',
+    heading: 'shopify development',
+    desc: "10+ years building fast, conversion-focused Shopify storefronts for brands across different industries.",
+  },
   {
     label: 'theme development',
     heading: "Liquid, at the core of every store I build",
@@ -54,6 +59,7 @@ const CHAPTERS = [
 
 // Produtos que caem dentro da sacola — um por capítulo, na mesma ordem
 const PRODUCTS = [
+  { src: '/assets/shoe.png', width: 203, height: 158, name: 'Shopify' },
   { src: '/assets/lipstick.png', width: 62, height: 182, name: 'Liquid' },
   { src: '/assets/dress.png', width: 157, height: 196, name: 'Custom Themes' },
   { src: '/assets/shoe.png', width: 203, height: 158, name: 'Checkout Ext.' },
@@ -67,6 +73,7 @@ const PRODUCTS = [
 // A sacola só "chega" (fade + desliza) depois desse tanto de scroll —
 // o texto já aparece de cara, criando uma entrada assíncrona
 const BAG_REVEAL_THRESHOLD = 0.03
+
 
 export function EcommerceSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -107,15 +114,14 @@ export function EcommerceSection() {
   }, [isVisible])
 
   const currentStep = Math.min(CHAPTERS.length - 1, Math.floor(progress * CHAPTERS.length))
+  // Progresso "local" do passo atual (0 a 1) — usado pra fazer o produto
+  // cair de forma contínua, acompanhando o scroll em tempo real dentro
+  // da fatia dele, em vez de "pular" de uma vez quando muda de passo
+  const localProgress = Math.min(1, Math.max(0, progress * CHAPTERS.length - currentStep))
 
   useEffect(() => {
     setBagVisible(progress > BAG_REVEAL_THRESHOLD)
   }, [progress])
-
-  // O produto só começa a cair depois que a sacola já apareceu — antes
-  // disso, -1 significa "nenhum produto ativo ainda" (o texto já pode
-  // estar no capítulo 0, mas o item correspondente não nasce pré-caído)
-  const activeItemIndex = progress > BAG_REVEAL_THRESHOLD ? currentStep : -1
 
   return (
     <section
@@ -129,13 +135,8 @@ export function EcommerceSection() {
           <div className={`${styles.glow} ${styles.glow1}`} />
           <div className={`${styles.glow} ${styles.glow2}`} />
           <div className={`${styles.glow} ${styles.glow3}`} />
-
-          <span className={`${styles.codeSymbol} ${styles.symbol1}`}>{'</>'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol2}`}>{'{ }'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol3}`}>$</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol4}`}>#</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol5}`}>{'</>'}</span>
-          <span className={`${styles.codeSymbol} ${styles.symbol6}`}>{'{ }'}</span>
+          <div className={`${styles.glow} ${styles.glow4}`} />
+          <div className={`${styles.glow} ${styles.glow5}`} />
 
           <span className={`${styles.sparkle} ${styles.sparkle1}`} />
           <span className={`${styles.sparkle} ${styles.sparkle2}`} />
@@ -143,11 +144,10 @@ export function EcommerceSection() {
           <span className={`${styles.sparkle} ${styles.sparkle4}`} />
           <span className={`${styles.sparkle} ${styles.sparkle5}`} />
           <span className={`${styles.sparkle} ${styles.sparkle6}`} />
-        </div>
-
-        <div className={`${styles.header} ${isVisible ? styles.visible : ''}`}>
-          <p className={styles.label}>expert in ecommerce</p>
-          <h2 className={styles.title}>shopify development</h2>
+          <span className={`${styles.sparkle} ${styles.sparkle7}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle8}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle9}`} />
+          <span className={`${styles.sparkle} ${styles.sparkle10}`} />
         </div>
 
         {/* Moedas flutuantes — independentes do scroll, decorativas.
@@ -198,15 +198,23 @@ export function EcommerceSection() {
               </div>
 
               {PRODUCTS.map((product, i) => {
-                const isCurrent = i === activeItemIndex
-                const hasSettled = i < activeItemIndex
-                const className = [
-                  styles.fallingItem,
-                  isCurrent ? styles.dropped : '',
-                  hasSettled ? styles.settled : '',
-                ].join(' ')
+                const isCurrent = i === currentStep
+                // Produto ativo sempre pousa no mesmo lugar (140px).
+                // Os inativos ficam esperando de um lado ou do outro,
+                // dependendo da direção do scroll: acima (rolando pra
+                // baixo, cai) ou abaixo (rolando pra cima, "sobe")
+                const hasSettled = i < currentStep
+                // O item ativo cai de forma contínua com o scroll: começa
+                // em -40px (escondido) e termina em 140px (dentro da
+                // sacola), interpolado direto pelo localProgress
+                const itemTop = isCurrent ? -40 + localProgress * 180 : -40
+                const itemOpacity = isCurrent ? localProgress : hasSettled ? 0 : 0
                 return (
-                  <div key={product.name} className={className}>
+                  <div
+                    key={product.name}
+                    className={styles.fallingItem}
+                    style={{ top: `${itemTop}px`, opacity: itemOpacity }}
+                  >
                     <div className={styles.itemIcon}>
                       <Image
                         src={product.src}
@@ -215,7 +223,6 @@ export function EcommerceSection() {
                         height={product.height}
                       />
                     </div>
-                    <div className={styles.itemName}>{product.name}</div>
                   </div>
                 )
               })}

@@ -28,6 +28,8 @@
 .glow1 { animation: glowDrift1 14s ease-in-out infinite; }
 .glow2 { animation: glowDrift2 17s ease-in-out infinite; }
 .glow3 { animation: glowDrift3 12s ease-in-out infinite; }
+.glow4 { animation: glowDrift2 16s ease-in-out infinite 3s; }
+.glow5 { animation: glowDrift1 19s ease-in-out infinite 4s; }
 
 .glow1 {
   top: 5%;
@@ -53,54 +55,41 @@
   background: radial-gradient(circle, rgba(255, 0, 153, 0.1), transparent 70%);
 }
 
+.glow4 {
+  top: 65%;
+  left: 25%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(139, 220, 6, 0.16), transparent 70%);
+}
+
+.glow5 {
+  top: 8%;
+  right: 25%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(204, 255, 102, 0.14), transparent 70%);
+}
+
 @keyframes glowDrift1 {
   0%, 100% { opacity: 0.6; transform: translate(0, 0) scale(1); }
-  33% { opacity: 1; transform: translate(60px, 40px) scale(1.15); }
-  66% { opacity: 0.8; transform: translate(-30px, 70px) scale(0.95); }
+  33% { opacity: 1; transform: translate(110px, 70px) scale(1.2); }
+  66% { opacity: 0.8; transform: translate(-60px, 120px) scale(0.9); }
 }
 
 @keyframes glowDrift2 {
   0%, 100% { opacity: 0.55; transform: translate(0, 0) scale(1); }
-  40% { opacity: 0.9; transform: translate(-70px, -50px) scale(1.1); }
-  70% { opacity: 0.7; transform: translate(40px, -30px) scale(0.9); }
+  40% { opacity: 0.9; transform: translate(-130px, -90px) scale(1.15); }
+  70% { opacity: 0.7; transform: translate(80px, -50px) scale(0.85); }
 }
 
 @keyframes glowDrift3 {
   0%, 100% { opacity: 0.5; transform: translate(0, 0) scale(1); }
-  50% { opacity: 0.9; transform: translate(50px, -60px) scale(1.2); }
+  50% { opacity: 0.9; transform: translate(90px, -100px) scale(1.25); }
 }
 
-/* Símbolos de código flutuando — mesmo espírito dos vagalumes dos
-   postes de luz, só com caracteres de código em vez de pontos */
-.codeSymbol {
-  position: absolute;
-  color: rgba(170, 255, 0, 0.35);
-  font-family: var(--font-sans);
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.symbol1 { top: 15%; left: 8%; font-size: 22px; animation: symbolFloat1 9s ease-in-out infinite; }
-.symbol2 { top: 65%; left: 6%; font-size: 18px; animation: symbolFloat2 11s ease-in-out infinite 1s; }
-.symbol3 { top: 20%; right: 12%; font-size: 26px; animation: symbolFloat3 8s ease-in-out infinite 2s; }
-.symbol4 { top: 70%; right: 8%; font-size: 20px; animation: symbolFloat1 10s ease-in-out infinite 3s; }
-.symbol5 { top: 45%; left: 4%; font-size: 16px; animation: symbolFloat2 7.5s ease-in-out infinite 0.5s; }
-.symbol6 { top: 50%; right: 5%; font-size: 24px; animation: symbolFloat3 9.5s ease-in-out infinite 1.5s; }
-
-@keyframes symbolFloat1 {
-  0%, 100% { transform: translateY(0) rotate(-4deg); opacity: 0.3; }
-  50% { transform: translateY(-24px) rotate(4deg); opacity: 0.6; }
-}
-@keyframes symbolFloat2 {
-  0%, 100% { transform: translateY(0) rotate(3deg); opacity: 0.25; }
-  50% { transform: translateY(20px) rotate(-3deg); opacity: 0.55; }
-}
-@keyframes symbolFloat3 {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.35; }
-  50% { transform: translateY(-16px) rotate(6deg); opacity: 0.65; }
-}
-
-/* Sparkles — pontinhos piscando, mesma técnica dos vagalumes */
+/* Partículas verdes — flutuam e viajam de um lado pro outro,
+   acompanhando o mesmo tom do brilho ambiente */
 .sparkle {
   position: absolute;
   width: 3px;
@@ -110,53 +99,44 @@
   pointer-events: none;
 }
 
-.sparkle1 { top: 25%; left: 20%; animation: sparkleTwinkle 3.2s ease-in-out infinite; }
-.sparkle2 { top: 78%; left: 15%; animation: sparkleTwinkle 2.6s ease-in-out infinite 0.6s; }
-.sparkle3 { top: 12%; right: 25%; animation: sparkleTwinkle 3.8s ease-in-out infinite 1.2s; }
-.sparkle4 { top: 60%; right: 20%; animation: sparkleTwinkle 2.9s ease-in-out infinite 0.3s; }
-.sparkle5 { top: 88%; right: 30%; animation: sparkleTwinkle 3.4s ease-in-out infinite 1.8s; }
-.sparkle6 { top: 35%; left: 45%; animation: sparkleTwinkle 3s ease-in-out infinite 0.9s; }
+.sparkle1 { top: 25%; left: 10%; animation: driftRight1 12s ease-in-out infinite; }
+.sparkle2 { top: 78%; left: 60%; animation: driftLeft1 14s ease-in-out infinite 1s; }
+.sparkle3 { top: 12%; left: 40%; animation: driftRight2 10s ease-in-out infinite 2s; }
+.sparkle4 { top: 60%; left: 15%; animation: driftLeft2 13s ease-in-out infinite 0.5s; }
+.sparkle5 { top: 88%; left: 25%; animation: driftRight1 15s ease-in-out infinite 3s; }
+.sparkle6 { top: 35%; left: 70%; animation: driftLeft1 11s ease-in-out infinite 1.5s; }
+.sparkle7 { top: 5%; left: 20%; animation: driftRight2 13s ease-in-out infinite 2.5s; }
+.sparkle8 { top: 50%; left: 85%; animation: driftLeft2 12s ease-in-out infinite 0.8s; }
+.sparkle9 { top: 92%; left: 50%; animation: driftRight1 16s ease-in-out infinite 4s; }
+.sparkle10 { top: 18%; left: 55%; animation: driftLeft1 10s ease-in-out infinite 3.5s; }
 
-@keyframes sparkleTwinkle {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.4); }
+@keyframes driftRight1 {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translate(120px, -20px); opacity: 0.8; }
+  85% { opacity: 1; }
+}
+@keyframes driftLeft1 {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translate(-120px, 24px); opacity: 0.8; }
+  85% { opacity: 1; }
+}
+@keyframes driftRight2 {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate(90px, 30px); opacity: 0.75; }
+  80% { opacity: 1; }
+}
+@keyframes driftLeft2 {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate(-90px, -26px); opacity: 0.75; }
+  80% { opacity: 1; }
 }
 
-.header {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 6%;
-  z-index: 4;
-  box-sizing: border-box;
-  opacity: 0;
-  transform: translateX(-50%) translateY(-16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.header.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.label {
-  color: var(--color-neon);
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  margin-bottom: 6px;
-}
-
-.title {
-  font-family: var(--font-pixel);
-  font-size: clamp(24px, 6vw, 48px);
-  font-weight: 600;
-  color: #f0f0f0;
-  line-height: 1.2;
-}
+/* .header removido — o título agora vive como o primeiro "capítulo"
+   dentro de .right (ver .chapter no JSX) */
 
 .stage {
   position: absolute;
@@ -314,8 +294,8 @@
 
 .bagWrap {
   position: relative;
-  width: 320px;
-  height: 350px;
+  width: 420px;
+  height: 460px;
   animation: bagFloat 4s ease-in-out infinite;
 }
 
@@ -382,7 +362,6 @@
 /* Itens de produto caindo dentro da sacola */
 .fallingItem {
   position: absolute;
-  top: -40px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
@@ -390,23 +369,11 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  opacity: 0;
-  transition: top 0.5s cubic-bezier(0.5, 0, 0.75, 0), opacity 0.3s ease;
-}
-
-.fallingItem.dropped {
-  top: 140px;
-  opacity: 1;
-}
-
-.fallingItem.settled {
-  transition: opacity 0.3s ease;
-  opacity: 0;
 }
 
 .itemIcon img {
-  width: 30px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
   image-rendering: pixelated;
   filter: drop-shadow(0 0 4px rgba(170, 255, 0, 0.6));
 }
@@ -427,10 +394,10 @@
   position: relative;
   z-index: 3;
   min-height: 380px;
-  text-align: left;
+  text-align: right;
   /* Compensa o float da sacola (que fica deslocada pra cima pela
      animação de flutuar), pra alinhar visualmente com o texto */
-  margin-top: 90px;
+  margin-top: 10px;
 }
 
 .chapter {
@@ -446,6 +413,20 @@
   pointer-events: auto;
 }
 
+.introIcon {
+  width: 48px;
+  height: 59px;
+  margin-left: auto;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 8px rgba(190, 249, 5, 0.5));
+}
+
+.introIcon img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
 .chapterLabel {
   color: var(--color-neon);
   font-family: var(--font-sans);
@@ -457,7 +438,7 @@
 
 .heading {
   font-family: var(--font-sans);
-  font-size: 28px;
+  font-size: clamp(28px, 5vw, 48px);
   font-weight: 700;
   color: #fff;
   line-height: 1.25;
@@ -479,26 +460,30 @@
 /* ——— Responsivo: empilha as colunas, reduz tamanhos ——— */
 @media (max-width: 768px) {
   .stage {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
-    padding: 90px 6% 20px;
+    padding: 70px 10% 16px;
     gap: 24px;
     overflow: hidden;
-  }
-
-  .header {
-    top: 4%;
-  }
-
-  .title {
-    font-size: clamp(20px, 7vw, 28px);
+    box-sizing: border-box;
   }
 
   .right {
     order: 1;
     flex: none;
+    width: 100%;
     max-width: 100%;
-    min-height: 220px;
+    min-height: 0;
+    margin-top: 0;
+    padding: 0 8px;
+    box-sizing: border-box;
+    text-align: center !important;
   }
 
   .left {
@@ -507,26 +492,44 @@
   }
 
   .bagWrap {
-    width: 200px;
-    height: 220px;
+    width: 280px;
+    height: 310px;
+    margin-top: 48px;
+  }
+
+  .chapter {
+    display: none;
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .chapter.active {
+    display: block;
+  }
+
+  .chapterLabel {
+    font-size: 10px;
   }
 
   .heading {
-    font-size: 20px;
+    line-height: 1.3;
+    margin-bottom: 8px;
   }
 
   .desc {
-    font-size: 13px;
-    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 8px;
   }
 
   .itemIcon img {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
   }
 
   .itemName {
-    font-size: 8px;
+    font-size: 7px;
   }
 
   .coinBig1,
@@ -535,7 +538,7 @@
   .coinSmall2,
   .coinSmall3,
   .coinSmall4 {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
   }
 }

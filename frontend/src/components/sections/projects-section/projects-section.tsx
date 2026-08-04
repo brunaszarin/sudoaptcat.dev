@@ -147,7 +147,7 @@ export function ProjectsSection() {
 
         <div className={styles.header}>
           <p className={styles.label}>my journey</p>
-          <h2 className={styles.title}>some places I&apos;ve been </h2>
+          <h2 className={styles.title}>some places I&apos;ve been<span style={{ color: 'var(--color-neon)' }}>.</span></h2>
         </div>
 
         <div className={styles.stage}>
