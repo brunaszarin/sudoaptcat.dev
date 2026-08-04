@@ -74,7 +74,8 @@ export function HeroSection() {
         >
           <p className={styles.tag}>hi, i&apos;m bruna szarin 👋🏻</p>
           <h1 className={styles.title}>
-            a fullstack software engineer.
+            a fullstack software engineer
+            <span style={{ color: 'var(--color-neon)' }}>.</span>
           </h1>
           <p className={styles.subtitle}>
             I build things for the web (and pet cats)

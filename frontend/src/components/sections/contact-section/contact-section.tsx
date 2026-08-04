@@ -37,7 +37,7 @@ export function ContactSection() {
     >
       <div className={styles.header}>
         <p className={styles.label}>get in touch</p>
-        <h2 className={styles.title}>let&apos;s build something together?</h2>
+        <h2 className={styles.title}>let&apos;s build something together<span style={{ color: 'var(--color-neon)' }}>?</span></h2>
       </div>
 
       <div className={styles.grid}>

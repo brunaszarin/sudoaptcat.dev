@@ -27,7 +27,9 @@ jest.mock('@/components/ui/pixel-button', () => ({
 describe('HeroSection', () => {
   it('renders headline and subtitle', () => {
     render(<HeroSection />)
-    expect(screen.getByText('a fullstack software engineer.')).toBeInTheDocument()
+    expect(
+      screen.getByText((_, element) => element?.textContent === 'a fullstack software engineer.')
+    ).toBeInTheDocument()
     expect(screen.getByText(/I build things for the web/i)).toBeInTheDocument()
   })
 

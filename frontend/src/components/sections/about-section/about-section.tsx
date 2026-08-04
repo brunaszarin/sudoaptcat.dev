@@ -20,7 +20,7 @@ export function AboutSection() {
         className={`${styles.content} fade-section ${isVisible ? 'is-visible' : ''}`}
       >
         <p className={styles.label}>about me</p>
-        <h2 className={styles.title}>nice to meet you</h2>
+        <h2 className={styles.title}>nice to meet you<span style={{ color: 'var(--color-neon)' }}>.</span></h2>
         <div className={styles.bio}>
           <p>
             I&apos;m a frontend-focused Fullstack Developer with expertise in React,

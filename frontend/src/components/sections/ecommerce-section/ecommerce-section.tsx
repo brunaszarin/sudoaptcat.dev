@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import Image from 'next/image'
 import { useFadeIn } from '@/hooks/useFadeIn'
@@ -74,6 +74,7 @@ const PRODUCTS = [
 // o texto já aparece de cara, criando uma entrada assíncrona
 const BAG_REVEAL_THRESHOLD = 0.03
 
+
 export function EcommerceSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
@@ -113,6 +114,10 @@ export function EcommerceSection() {
   }, [isVisible])
 
   const currentStep = Math.min(CHAPTERS.length - 1, Math.floor(progress * CHAPTERS.length))
+  // Progresso "local" do passo atual (0 a 1) — usado pra fazer o produto
+  // cair de forma contínua, acompanhando o scroll em tempo real dentro
+  // da fatia dele, em vez de "pular" de uma vez quando muda de passo
+  const localProgress = Math.min(1, Math.max(0, progress * CHAPTERS.length - currentStep))
 
   useEffect(() => {
     setBagVisible(progress > BAG_REVEAL_THRESHOLD)
@@ -194,14 +199,22 @@ export function EcommerceSection() {
 
               {PRODUCTS.map((product, i) => {
                 const isCurrent = i === currentStep
+                // Produto ativo sempre pousa no mesmo lugar (140px).
+                // Os inativos ficam esperando de um lado ou do outro,
+                // dependendo da direção do scroll: acima (rolando pra
+                // baixo, cai) ou abaixo (rolando pra cima, "sobe")
                 const hasSettled = i < currentStep
-                const className = [
-                  styles.fallingItem,
-                  isCurrent ? styles.dropped : '',
-                  hasSettled ? styles.settled : '',
-                ].join(' ')
+                // O item ativo cai de forma contínua com o scroll: começa
+                // em -40px (escondido) e termina em 140px (dentro da
+                // sacola), interpolado direto pelo localProgress
+                const itemTop = isCurrent ? -40 + localProgress * 180 : -40
+                const itemOpacity = isCurrent ? localProgress : hasSettled ? 0 : 0
                 return (
-                  <div key={product.name} className={className}>
+                  <div
+                    key={product.name}
+                    className={styles.fallingItem}
+                    style={{ top: `${itemTop}px`, opacity: itemOpacity }}
+                  >
                     <div className={styles.itemIcon}>
                       <Image
                         src={product.src}

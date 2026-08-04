@@ -204,7 +204,7 @@ export function BlogSection() {
 
         <div className={styles.header}>
           <p className={styles.label}>from the blog</p>
-          <h2 className={styles.title}>what i&apos;ve been writing</h2>
+          <h2 className={styles.title}>what i&apos;ve been writing<span style={{ color: 'var(--color-neon)' }}>.</span></h2>
         </div>
 
         <Terminal
