@@ -18,6 +18,7 @@ const LINKS = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('home')
+  const [overGallery, setOverGallery] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const isHome = pathname === '/'
@@ -31,6 +32,17 @@ export function Navbar() {
     function computeScrolled() {
       ticking = false
       setScrolled(window.scrollY > 20)
+
+      // A galeria tem imagens escuras/claras variadas, então o navbar
+      // fica mais translúcido só quando está sobreposto a ela — em vez
+      // do fundo quase opaco padrão, que esconderia as imagens de baixo
+      const gallery = document.getElementById('gallery')
+      if (gallery) {
+        const rect = gallery.getBoundingClientRect()
+        setOverGallery(rect.top <= 80 && rect.bottom >= 0)
+      } else {
+        setOverGallery(false)
+      }
     }
 
     function handleScroll() {
@@ -98,7 +110,9 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
+      <nav
+        className={`${styles.nav} ${scrolled ? styles.scrolled : ''} ${overGallery ? styles.overGallery : ''}`}
+      >
         <button className={styles.logo} onClick={goHome} aria-label="go to home">
           sudo apt <b>cat</b>
         </button>

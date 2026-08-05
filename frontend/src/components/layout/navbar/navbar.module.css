@@ -19,6 +19,15 @@
   border-bottom: 1px solid rgba(170, 255, 0, 0.1);
 }
 
+/* Por cima da galeria de imagens, fica mais transparente — deixa as
+   imagens aparecerem por baixo em vez de esconder atrás de um fundo
+   quase opaco */
+.overGallery {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
 .logo {
   appearance: none;
   background: none;

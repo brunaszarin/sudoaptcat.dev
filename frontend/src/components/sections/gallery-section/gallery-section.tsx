@@ -81,8 +81,11 @@ export function GallerySection() {
     >
       <div className={styles.sticky} ref={stickyRef}>
         <div className={styles.header}>
+          <div className={styles.headerScrim} />
           <p className={styles.label}>a peek behind the scenes</p>
-          <h2 className={styles.title}>how i build things<span style={{ color: 'var(--color-neon)' }}>.</span></h2>
+          <h2 className={styles.title}>
+            how i build things<span style={{ color: 'var(--color-neon)' }}>.</span>
+          </h2>
         </div>
 
         <div
@@ -92,7 +95,7 @@ export function GallerySection() {
         >
           {IMAGES.map((src) => (
             <div key={src} className={styles.panel}>
-              <Image src={src} alt="" width={1200} height={675} />
+              <Image src={src} alt="" fill sizes="100vw" style={{ objectFit: 'cover' }} />
             </div>
           ))}
         </div>
